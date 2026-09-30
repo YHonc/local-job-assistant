@@ -1,77 +1,108 @@
 # Local Job Assistant · 岗位工作台
 
-本地优先的个人求职管理工具。把招聘网页、岗位资料、投递进度和招聘邮件整理在一个工作台中。
+把散落在招聘网站、浏览器标签页和邮箱里的求职信息，整理成一个清楚、好用的个人工作台。
 
-基于 FastAPI、SQLite、原生 JavaScript 和 Chrome Manifest V3 扩展。无需 Docker、Redis 或前端构建步骤。
+从收藏岗位、整理资料，到记录投递和跟进面试，Local Job Assistant 帮你把每一步连起来。应用在本机运行，使用 SQLite 保存数据，可按需接入 AI 模型、招聘邮箱和消息提醒。
 
-## 功能
+## 能做什么
 
-- **岗位库**：公司与岗位管理、搜索、多条件筛选、类别标签、添加时间、列表/卡片切换、批量整理与归档。
-- **投递跟进**：快捷更新状态、状态历史、撤销；可配置查看详情或点击投递链接后的自动记录行为。
-- **网页导入**：扩展读取用户选择的招聘页面，模型提取结构化资料，经确认后入库；也可先存草稿再整理。
-- **招聘邮件**：IMAP 增量同步、规则预筛、模型识别、岗位关联与待确认进度建议。
-- **提醒与设置**：桌面/Push 通知、多模型与用量、自动健康检查、按模型使用 HTTP/SOCKS 代理、显示偏好。
+### 收集岗位，随时整理
 
-工作台提供待投递、已投递、待面试、1面、2面、3面、HR面、拒绝八种快捷状态；旧入口和历史记录仍保留兼容状态。点击“去投递”只记录点击行为，不代表已在招聘网站成功提交申请。
+在招聘网页中点击 Chrome 扩展，即可提取公司、岗位、地点和职位描述，核对后加入岗位库。也可以先保存到“待整理”，之后再补充资料。
+
+### 建立自己的岗位库
+
+集中管理公司与岗位，通过关键词、职位类别、地点、招聘类型和投递状态查找机会。支持标签、添加时间、列表与卡片视图，以及批量整理和归档。
+
+### 跟进每一次投递
+
+直接在岗位列表中更新投递状态，查看变更记录，或撤销一次操作。工作台提供以下快捷状态：
+
+`待投递` · `已投递` · `待面试` · `1面` · `2面` · `3面` · `HR面` · `拒绝`
+
+### 整理招聘邮件与提醒
+
+连接 IMAP 邮箱后，增量同步招聘邮件，按规则筛选，再通过模型识别重要信息、关联岗位并生成进度建议。测评、笔试、面试和 Offer 等消息可以配合桌面或 Push 提醒查看。
+
+### 按自己的习惯使用
+
+管理多个 AI 模型，查看调用用量，配置任务分配、健康检查和网络代理。通过显示偏好调整主题、信息展示和交互行为。
 
 ## 快速开始
 
-需要 Python 3.11+；Windows 为主要使用环境。Node.js 仅用于开发时运行前端测试。
+准备好 **Python 3.11+** 和 **Git**。推荐在 Windows 下使用一键启动。
+
+### 1. 下载项目
 
 ```powershell
 git clone https://github.com/YHonc/local-job-assistant.git
 cd local-job-assistant
+```
+
+### 2. 启动工作台
+
+双击项目根目录的 **`一键启动.bat`**。首次启动会自动创建 Python 环境、安装依赖、初始化数据库，并打开浏览器。
+
+工作台地址：<http://127.0.0.1:8765/workbench?view=library>
+
+保持启动窗口开启即可使用，按 `Ctrl+C` 停止服务。更新项目后，重新启动即可加载新版本。
+
+<details>
+<summary>手动安装与启动</summary>
+
+在项目目录运行：
+
+```powershell
 py -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -e ".[dev]"
+.\.venv\Scripts\python.exe -m pip install -e .
 .\.venv\Scripts\python.exe -m alembic upgrade head
 .\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8765
 ```
 
-打开 <http://127.0.0.1:8765/workbench?view=library>。Windows 也可双击根目录 `一键启动.bat`，脚本会准备环境、执行迁移并打开浏览器。升级代码后先停止旧服务，再重新启动。
+默认数据库文件为项目目录中的 `local_job_assistant.db`。
 
-默认数据库是当前工作目录的 `local_job_assistant.db`。如需更换，在迁移和启动前同时设置 `DATABASE_URL`，例如 `sqlite:///./data/jobs.db`，并先创建 `data` 目录。迁移会写入数据库，升级前请停止服务并自行备份。
+</details>
 
-应用面向本机单用户使用，没有面向公网的登录鉴权。保持监听 `127.0.0.1`，使用一个 Uvicorn 进程；不要添加多个 `--workers`。邮箱、通知与模型健康调度运行在应用进程内。
+### 3. 添加第一个岗位
 
-## 配置模型与扩展
+点击岗位库右上角的 **“新增岗位”**，填写公司与岗位信息后保存。模型、邮箱和提醒可以在需要时再配置。
 
-1. 进入工作台「设置」，添加模型、API 地址与密钥。模型测试会调用相应服务，可能产生费用。
-2. 在 Chrome 打开 `chrome://extensions`，开启开发者模式，加载本项目的 `extension/` 目录。
-3. 在招聘页点击扩展，核对提取结果后确认添加。修改扩展源码后需重新加载。
-4. 如需代理，先在 AI 模型设置中保存地址，例如 `http://127.0.0.1:7890`，再为具体模型开启代理。代理失败不会自动回退直连。
+## 用浏览器扩展收集岗位
 
-支持 OpenAI 兼容、Anthropic 兼容和 Gemini 原生模型接口；其他 Provider 通过 LiteLLM 适配，能力依供应商而异。邮箱同步需要 IMAP 授权码；通知按需配置。详见 [扩展说明](extension/README.md)。
+1. 在工作台「设置」中添加 AI 模型，填写模型名称、API 地址和密钥。
+2. 在 Chrome 打开 `chrome://extensions`，开启“开发者模式”。
+3. 点击“加载已解压的扩展程序”，选择本项目的 `extension` 文件夹。
+4. 打开招聘页面，点击扩展，将当前页加入解析队列。
+5. 核对提取结果，确认添加；也可以选择“保存到待整理”，稍后处理。
 
-## 数据与隐私
+支持 OpenAI 兼容、Anthropic 兼容和 Gemini 原生接口，并通过 LiteLLM 接入其他 Provider。扩展支持后台解析队列、多任务恢复和批量添加，详见 [扩展使用说明](extension/README.md)。
 
-业务数据保存在本地 SQLite；API Key、邮箱授权码和 Push 地址通过操作系统 keyring 保存。**本地优先不等于完全离线**：开启模型提取或邮件识别时，相应文本会发给配置的模型服务；启用 Push 时通知内容会发给配置的服务。
+## 连接邮箱与通知
 
-仓库不包含个人岗位库、邮件、数据库、凭据、截图或个人提示词 Markdown。新克隆的项目从空数据库开始。`.gitignore` 默认忽略 Markdown，仅明确放行公开说明文档；个人提示词、开发计划和交接笔记放在 `local/` 下。内置通用解析逻辑属于应用源码，仍随项目提供。
+在「设置」中添加邮箱账户，填写 IMAP 信息与邮箱授权码，设置同步时间范围和筛选规则。支持 QQ、163 预设及自定义 IMAP 邮箱。
 
-详情见 [隐私与发布边界](docs/privacy.md)。
+同步后的信息可以在 **“邮件与提醒”** 中查看、整理和关联。按需配置桌面通知或 Push 服务，及时跟进有时间要求的招聘安排。
 
-## 目录与开发
+## 技术与开发
+
+后端使用 **FastAPI + SQLAlchemy + SQLite**，数据库迁移使用 **Alembic**；前端使用 **Jinja2 + 原生 JavaScript**，浏览器扩展采用 **Manifest V3**。
 
 ```text
 app/           后端、模板、前端脚本与样式
 extension/     Chrome 扩展
 migrations/    Alembic 数据库迁移
-scripts/       启动、开发预览和发布检查
-tests/         使用合成数据与 fake 服务的测试
-docs/          公开开发、验收和隐私说明
-local/         私人资料与历史原型（本地保留，Git 忽略）
+scripts/       启动与开发工具
+tests/         后端与前端测试
+docs/          项目文档
 ```
 
-开发流程见 [开发说明](docs/development.md)，模块关系见 [架构说明](ARCHITECTURE.md)，实际集成检查见 [人工验收](docs/manual-qa.md)。
+欢迎通过 Issue 反馈使用体验和功能建议，也欢迎提交 Pull Request。
 
-```powershell
-.\.venv\Scripts\python.exe -m pytest -q --basetemp .tmp/pytest-local
-node --test (Get-ChildItem -LiteralPath tests -Filter '*.test.cjs').FullName
-python scripts/check_publication.py --staged
-```
-
-提交代码前启用本地推送检查：`git config core.hooksPath .githooks`。新增公开 Markdown 需要同时更新忽略规则和发布检查脚本白名单，并审阅正文。
+- [开发说明](docs/development.md)：环境配置、测试与开发预览
+- [架构说明](ARCHITECTURE.md)：模块职责与数据流
+- [人工验收](docs/manual-qa.md)：主要功能检查流程
+- [数据与隐私说明](docs/privacy.md)：数据存储与外部服务
 
 ## 开源协议
 
-项目采用 [MIT License](LICENSE)。第三方依赖遵循各自的许可证；招聘网页、邮件与用户导入数据不属于本项目授权的源码。
+本项目采用 [MIT License](LICENSE)。
