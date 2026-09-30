@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>招聘邮件 · 求职作战台</title>
+  <link rel="stylesheet" href="/static/app.css?v=20260917-email-inbox">
+</head>
+<body>
+  {% set active_page = 'events' %}
+  {% include '_sidebar.html' %}
+  <main class="workspace events-workspace">
+    <header class="topbar">
+      <div>
+        <p class="page-path">招聘事件 / 邮件收件箱</p>
+        <h1>招聘事件</h1>
+        <p class="subhead">邮件先按正则筛选，再由 AI 清洗；清洗结果会先展示，岗位匹配和归档在后台继续完成。</p>
+      </div>
+      <a class="button quiet" href="/settings">配置邮箱</a>
+    </header>
+
+    <section class="toolbar email-toolbar" aria-label="邮件筛选">
+      <label class="search" for="emailSearch">
+        <span aria-hidden="true">⌕</span>
+        <input id="emailSearch" type="search" autocomplete="off" placeholder="搜索主题、发件人、公司或岗位" aria-label="搜索邮件">
+      </label>
+      <label class="filter-field" for="emailStatusFilter">处理状态
+        <select id="emailStatusFilter">
+          <option value="">全部状态</option>
+          <option value="processing">处理中</option>
+          <option value="linked">已关联</option>
+          <option value="created">已新建</option>
+          <option value="pending">待处理</option>
+          <option value="failed">失败</option>
+        </select>
+      </label>
+      <label class="filter-field" for="emailAccountFilter">来源账户
+        <select id="emailAccountFilter"><option value="">全部账户</option></select>
+      </label>
+      <button id="refreshEmails" class="button quiet" type="button">刷新</button>
+    </section>
+    <p id="emailFeedback" class="feedback" role="status" aria-live="polite"></p>
+    <section class="email-inbox" aria-labelledby="emailInboxTitle">
+      <div class="email-list-heading">
+        <div>
+          <h2 id="emailInboxTitle">邮件收件箱</h2>
+          <p class="muted-copy">打开邮件查看清洗正文、结构化字段、岗位条目和招聘事件。</p>
+        </div>
+        <span id="emailCount" class="muted-copy" aria-live="polite"></span>
+      </div>
+      <section id="emailList" class="email-list" aria-live="polite"></section>
+    </section>
+
+    <details class="legacy-events-panel">
+      <summary>历史招聘事件（兼容视图）</summary>
+      <div class="toolbar event-toolbar" aria-label="事件筛选">
+        <label class="filter-field" for="eventTypeFilter">事件类型
+          <select id="eventTypeFilter">
+            <option value="">所有事件类型</option>
+            <option value="APPLICATION_RECEIVED">收到回复</option>
+            <option value="ASSESSMENT">测评</option>
+            <option value="WRITTEN_TEST">笔试</option>
+            <option value="INTERVIEW">面试</option>
+            <option value="INTERVIEW_CHANGED">面试变更</option>
+            <option value="OFFER">Offer</option>
+            <option value="REJECTED">拒绝</option>
+            <option value="RECRUITMENT_MARKETING">招聘营销</option>
+            <option value="OTHER">其他</option>
+          </select>
+        </label>
+        <label class="filter-field" for="associationFilter">关联状态
+          <select id="associationFilter">
+            <option value="">所有关联状态</option>
+            <option value="unmatched">待匹配</option>
+            <option value="suggested">待确认</option>
+            <option value="auto_bound">自动关联</option>
+            <option value="confirmed">已确认</option>
+            <option value="dismissed">保持未关联</option>
+          </select>
+        </label>
+        <button id="refreshEvents" class="button quiet" type="button">刷新事件</button>
+      </div>
+      <p id="eventFeedback" class="feedback" role="status" aria-live="polite"></p>
+      <section id="eventList" class="event-list" aria-live="polite"></section>
+    </details>
+  </main>
+
+  <dialog id="emailDialog" aria-labelledby="emailDialogTitle">
+    <div class="dialog-head email-dialog-head">
+      <div>
+        <p class="page-path">招聘邮件 / 详情</p>
+        <h2 id="emailDialogTitle">邮件详情</h2>
+        <p id="emailDialogSubtitle" class="muted-copy"></p>
+      </div>
+      <div class="email-dialog-status">
+        <span id="emailDialogStatus" class="tag" aria-live="polite"></span>
+        <button class="icon-button" type="button" data-close aria-label="关闭">×</button>
+      </div>
+    </div>
+    <div id="emailContent" class="email-content" aria-live="polite"></div>
+    <div class="dialog-actions email-dialog-actions">
+      <button class="button quiet" type="button" data-close>关闭</button>
+      <button class="button quiet" type="button" id="retryCleaning">重试清洗</button>
+      <button class="button quiet" type="button" id="reprocessEmail">重新清洗</button>
+      <button class="button quiet" type="button" id="rematchEmail">重新匹配</button>
+      <button class="button quiet" type="button" id="retryArchive">重试岗位归档</button>
+      <button class="button danger-button" type="button" id="deleteEmail">删除本地邮件</button>
+    </div>
+  </dialog>
+
+  <script src="/static/js/shared/api.js?v=20260917-email-inbox" defer></script>
+  <script src="/static/js/shared/dom.js?v=20260917-email-inbox" defer></script>
+  <script src="/static/app.js?v=20260917-email-inbox" defer></script>
+  <script src="/static/js/pages/events.js?v=20260917-email-inbox" defer></script>
+</body>
+</html>

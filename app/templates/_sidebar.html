@@ -1,0 +1,27 @@
+<script id="application-status-config" type="application/json">{{ application_statuses|default([])|tojson }}</script>
+<aside class="sidebar" id="appSidebar" data-collapsed="false">
+  <div class="sidebar-head">
+    <button class="brand" type="button" data-sidebar-toggle aria-controls="primaryNav" aria-expanded="true" aria-label="折叠主导航">
+      <span class="brand-mark" aria-hidden="true">职</span>
+      <span class="brand-name">求职作战台</span>
+    </button>
+  </div>
+  <nav id="primaryNav" aria-label="主导航">
+    <a href="/legacy/tracker" title="Tracker · 岗位轨道" aria-label="Tracker，岗位轨道"{% if active_page == 'tracker' %} class="active" aria-current="page"{% endif %}>
+      <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h16v11H4zM8 7.5V5h8v2.5M4 12h16M10 12v2h4v-2"/></svg>
+      <span class="nav-copy"><strong>岗位轨道</strong></span>
+    </a>
+    <a href="/events" title="招聘事件 · 邮件识别与关联" aria-label="招聘事件，邮件识别与关联"{% if active_page == 'events' %} class="active" aria-current="page"{% endif %}>
+      <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h17v12h-17zM4 7l8 6 8-6M7 4.5h10"/></svg>
+      <span class="nav-copy"><strong>招聘事件</strong></span>
+    </a>
+    <a href="/notifications" title="通知中心 · 发送历史与重试" aria-label="通知中心，发送历史与重试"{% if active_page == 'notifications' %} class="active" aria-current="page"{% endif %}>
+      <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17h12l-1.4-2V10a4.6 4.6 0 0 0-9.2 0v5zM10 20h4M12 3v2"/></svg>
+      <span class="nav-copy"><strong>通知中心</strong></span>
+    </a>
+    <a href="/settings" title="基础设置" aria-label="基础设置"{% if active_page == 'settings' %} class="active" aria-current="page"{% endif %}>
+      <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9M13 4v6M7 14v6"/></svg>
+      <span class="nav-copy"><strong>基础设置</strong></span>
+    </a>
+  </nav>
+</aside>

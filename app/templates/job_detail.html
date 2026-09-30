@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>岗位详情 · 求职作战台</title>
+  <link rel="stylesheet" href="/static/app.css?v=20260905-detail-links">
+</head>
+<body>
+  {% set active_page = 'tracker' %}
+  {% include '_sidebar.html' %}
+  <main class="workspace detail-workspace" data-job-id="{{ job_id }}">
+    <header class="detail-nav">
+      <a class="back-link" href="/legacy/tracker">← 返回岗位轨道</a>
+    </header>
+    <p id="detailFeedback" class="feedback" role="status" aria-live="polite">正在加载岗位资料…</p>
+    <article id="jobDetail" hidden>
+      <header class="detail-hero">
+        <div>
+          <p id="detailCompany" class="detail-company"></p>
+          <h1 id="detailTitle"></h1>
+          <p id="detailSummary" class="detail-summary"></p>
+        </div>
+        <div class="detail-actions">
+          <a id="detailSource" class="button quiet" target="_blank" rel="noopener noreferrer" hidden>查看来源</a>
+          <a id="detailEdit" class="button primary" href="/legacy/tracker">编辑资料</a>
+        </div>
+      </header>
+
+      <section class="property-grid surface" aria-label="岗位基本信息">
+        <div><span>工作地点</span><strong id="detailLocation"></strong></div>
+        <div><span>招聘类型</span><select id="detailType" aria-label="修改招聘类型"></select></div>
+        <div><span>岗位类别</span><strong id="detailCategory"></strong></div>
+        <div><span>来源</span><strong id="detailSourceName"></strong></div>
+        <div><span>岗位发布时间</span><strong id="detailPublished"></strong></div>
+        <div><span>添加时间</span><strong id="detailAdded"></strong></div>
+        <div><span>当前状态</span><select id="detailStatus" aria-label="修改当前状态"></select></div>
+      </section>
+
+      <div class="detail-layout">
+        <div class="detail-main">
+          <section class="detail-section">
+            <h2>岗位描述</h2>
+            <p id="detailDescription" class="pre-line"></p>
+          </section>
+          <section class="detail-section">
+            <h2>个人记录</h2>
+            <p id="detailNotes" class="pre-line"></p>
+          </section>
+        </div>
+        <aside class="progress-card surface" aria-labelledby="progressTitle">
+          <h2 id="progressTitle">申请进度</h2>
+          <ol id="detailProgress" class="progress-list"></ol>
+        </aside>
+      </div>
+    </article>
+  </main>
+  <script src="/static/js/shared/api.js?v=20260917-reorg-fix" defer></script>
+  <script src="/static/js/shared/dom.js?v=20260917-reorg-fix" defer></script>
+  <script src="/static/app.js?v=20260917-reorg-fix" defer></script>
+  <script src="/static/js/pages/job-detail.js?v=20260927-cutover" defer></script>
+</body>
+</html>

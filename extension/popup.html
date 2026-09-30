@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>职位解析队列</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main>
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">LOCAL JOB ASSISTANT</p>
+        <h1>职位解析队列</h1>
+      </div>
+      <span class="local-badge">仅本机</span>
+    </header>
+
+    <section id="queue-view">
+      <p class="intro">把职位页交给后台逐个解析。关闭弹窗后任务仍会继续，稍后打开即可核对。</p>
+      <button id="extract" class="primary wide" type="button">
+        <span>把当前页加入解析队列</span>
+        <span aria-hidden="true">＋</span>
+      </button>
+      <button id="save-draft" class="quiet wide" type="button">保存到待整理（不调用 AI）</button>
+      <button id="retry-draft-save" class="quiet wide" type="button" hidden>重试保存待处理捕获</button>
+      <button id="discard-draft-save" class="quiet wide danger-text" type="button" hidden>放弃全部待保存捕获</button>
+      <label class="model-picker" for="model-select">解析模型
+        <select id="model-select"><option value="">自动 · 跟随设置路由</option></select>
+      </label>
+      <p id="status" class="status" role="status" aria-live="polite" tabindex="-1"></p>
+
+      <section class="queue-panel" aria-labelledby="queue-title">
+        <header class="queue-heading">
+          <div>
+            <p class="eyebrow">CAPTURE QUEUE</p>
+            <h2 id="queue-title">任务夹</h2>
+          </div>
+          <div class="queue-metric" aria-live="polite">
+            <strong id="queue-count">0</strong>
+            <span>个任务</span>
+          </div>
+        </header>
+
+        <div id="batch-toolbar" class="batch-toolbar" hidden>
+          <label class="select-all" for="select-all">
+            <input id="select-all" type="checkbox">
+            <span>选择全部可添加项</span>
+          </label>
+          <button id="batch-confirm" class="compact primary" type="button">批量添加</button>
+        </div>
+
+        <div id="task-list" class="task-list" aria-live="polite"></div>
+        <div id="empty-queue" class="empty-queue">
+          <span class="empty-mark" aria-hidden="true">＋</span>
+          <strong>任务夹还是空的</strong>
+          <p>打开一个招聘页面，把它加入队列。</p>
+        </div>
+      </section>
+
+      <p class="privacy-note">未保存的页面正文只暂存在本次浏览器会话。保存到待整理后会写入本机服务；解析队列正文在提取结束后清除。</p>
+    </section>
+
+    <section id="review-view" hidden>
+      <button id="back-to-queue" class="back-button" type="button">← 返回任务夹</button>
+      <p id="review-status" class="status" role="status" aria-live="polite"></p>
+
+      <form id="job-form">
+        <div class="review-heading">
+          <div>
+            <p class="eyebrow">REVIEW TASK</p>
+            <h2>核对提取结果</h2>
+            <p id="review-source" class="review-source"></p>
+          </div>
+          <span id="confidence" class="confidence" hidden></span>
+        </div>
+        <section id="review-telemetry" class="telemetry-panel" aria-label="解析任务信息">
+          <div><span>阶段</span><strong id="review-stage">未开始</strong></div>
+          <div><span>耗时</span><strong id="review-duration">未开始</strong></div>
+          <div><span>尝试次数</span><strong id="review-attempts">0 次</strong></div>
+          <div class="telemetry-wide"><span>当前/最终模型</span><strong id="review-model">后端自动选择</strong></div>
+          <div class="telemetry-wide"><span>本次解析请求用量</span><strong>输入 <b id="review-prompt-tokens">未返回</b> · 输出 <b id="review-completion-tokens">未返回</b> <em id="review-usage-note"></em></strong></div>
+        </section>
+
+        <div id="warnings" class="warning-panel" hidden>
+          <strong>需要留意</strong>
+          <ul id="warning-list"></ul>
+        </div>
+
+        <label for="company_name">公司名称</label>
+        <input id="company_name" name="company_name" maxlength="200" required>
+
+        <label for="title">职位名称</label>
+        <input id="title" name="title" maxlength="300" required>
+
+        <div class="field-grid">
+          <div>
+            <label for="location">地点</label>
+            <input id="location" name="location" maxlength="300">
+          </div>
+          <div>
+            <label for="employment_type">用工类型</label>
+            <input id="employment_type" name="employment_type" maxlength="100">
+          </div>
+        </div>
+
+        <label for="job_category">岗位类别</label>
+        <select id="job_category" name="job_category">
+          <option value="">自动识别</option>
+          <option>数据分析</option>
+          <option>运营</option>
+          <option>产品</option>
+          <option>AI/算法</option>
+          <option>技术研发</option>
+          <option>市场/销售</option>
+          <option>财务/金融</option>
+          <option>咨询/战略</option>
+          <option>供应链/制造</option>
+          <option>职能/支持</option>
+          <option>其他</option>
+        </select>
+
+        <label for="published_at">岗位发布时间</label>
+        <input id="published_at" name="published_at" type="date">
+
+        <label for="description">职位描述</label>
+        <textarea id="description" name="description" maxlength="50000" rows="5"></textarea>
+
+        <label for="source_website">来源网站</label>
+        <input id="source_website" name="source_website" maxlength="200">
+
+        <label for="source_url">来源地址</label>
+        <input id="source_url" name="source_url" readonly>
+
+        <div class="divider"></div>
+
+        <label for="application_status">申请状态</label>
+        <select id="application_status" name="application_status">
+          <option>收藏</option>
+          <option>待投递</option>
+          <option>已投递</option>
+          <option>测评</option>
+          <option>笔试</option>
+          <option>一面</option>
+          <option>二面</option>
+          <option>HR面</option>
+          <option>Offer</option>
+          <option>拒绝</option>
+          <option>放弃</option>
+        </select>
+
+        <label for="notes">备注</label>
+        <textarea id="notes" name="notes" maxlength="10000" rows="3"></textarea>
+
+        <section id="duplicates" class="duplicate-panel" hidden>
+          <h3>发现可能重复的职位</h3>
+          <ul id="duplicate-list"></ul>
+          <label class="checkbox-row" for="allow_duplicate">
+            <input type="checkbox" id="allow_duplicate">
+            <span>我已核对，仍然添加</span>
+          </label>
+        </section>
+
+        <div class="review-actions">
+          <button id="confirm" class="primary" type="submit">添加这一项</button>
+          <button id="remove-current" class="quiet danger-text" type="button">移除任务</button>
+        </div>
+        <p class="autosave-note">修改会自动保存在任务夹中。</p>
+      </form>
+    </section>
+  </main>
+  <dialog id="confirm-dialog" aria-labelledby="confirm-dialog-text">
+    <p id="confirm-dialog-text"></p>
+    <div class="confirm-actions">
+      <button id="confirm-cancel" class="quiet" type="button">取消</button>
+      <button id="confirm-accept" class="primary compact" type="button">确认</button>
+    </div>
+  </dialog>
+  <script src="preview.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

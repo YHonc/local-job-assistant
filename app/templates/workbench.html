@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="职位整理工作台">
+  <title>岗位工作台</title>
+  <link rel="stylesheet" href="/static/css/workbench/tokens.css?v=20260927-type2">
+  <link rel="stylesheet" href="/static/css/workbench/layout.css?v=20260927-type1">
+  <link rel="stylesheet" href="/static/css/workbench/components.css?v=20260927-type5">
+  <link rel="stylesheet" href="/static/css/workbench/views.css?v=20260927-type1">
+  <link rel="stylesheet" href="/static/css/workbench/editors.css?v=20260927-type2">
+  <link rel="stylesheet" href="/static/css/workbench/integrations.css?v=20260927-type1">
+  <link rel="stylesheet" href="/static/css/workbench/model-settings.css?v=20260927-settings">
+  <link rel="stylesheet" href="/static/css/workbench/progress.css?v=20260928">
+  <link rel="stylesheet" href="/static/css/workbench/settings.css?v=20260929-settings">
+  <script id="workbench-config" type="application/json">{{ {"jobCategories": job_categories, "statuses": application_statuses, "statusAliases": status_aliases, "directions": job_directions}|tojson }}</script>
+</head>
+<body class="workbench-page">
+  <div class="wb-app" id="workbenchApp">
+    <aside class="wb-sidebar" id="workbenchSidebar" aria-label="工作台导航">
+      <a class="wb-brand" href="/workbench?view=library" aria-label="岗位工作台首页">
+        <span class="wb-brand-mark" aria-hidden="true">职</span>
+        <span><strong>岗位工作台</strong><small>整理每一个可能</small></span>
+      </a>
+      <button class="wb-button wb-button-quiet wb-nav-close" type="button" data-workbench-nav-close aria-label="关闭导航">关闭</button>
+      <div class="wb-space-label">工作区</div>
+      <nav class="wb-nav" id="workbenchNav" aria-label="工作视图">
+        <a class="wb-nav-link" href="/workbench?view=library" data-workbench-view="library"><span class="wb-nav-icon" aria-hidden="true">▦</span><span>岗位库</span></a>
+        <a class="wb-nav-link" href="/workbench?view=pending" data-workbench-view="pending"><span class="wb-nav-icon" aria-hidden="true">▣</span><span>待整理</span></a>
+        <a class="wb-nav-link" href="/workbench?view=follow" data-workbench-view="follow"><span class="wb-nav-icon" aria-hidden="true">↗</span><span>投递跟进</span></a>
+        <a class="wb-nav-link" href="/workbench?view=mail" data-workbench-view="mail"><span class="wb-nav-icon" aria-hidden="true">✉</span><span>邮件与提醒</span></a>
+      </nav>
+      <div class="wb-space-label wb-space-label-secondary">偏好</div>
+      <nav class="wb-nav" aria-label="偏好设置">
+        <a class="wb-nav-link" href="/workbench?view=settings" data-workbench-view="settings"><span class="wb-nav-icon" aria-hidden="true">⚙</span><span>设置</span></a>
+      </nav>
+      <div class="wb-sidebar-footer">
+        <p>岗位、投递、邮件与设置集中管理；旧版岗位管理仍可访问。</p>
+        <a class="wb-legacy-link" href="/legacy/tracker">打开现有岗位管理 <span aria-hidden="true">↗</span></a>
+      </div>
+    </aside>
+    <div class="wb-nav-backdrop" data-workbench-nav-close aria-hidden="true"></div>
+
+    <div class="wb-workspace">
+      <header class="wb-topbar">
+        <div class="wb-topbar-context"><button class="wb-mobile-menu" type="button" data-workbench-nav-toggle aria-label="打开导航" aria-controls="workbenchSidebar" aria-expanded="false">☰</button><div class="wb-breadcrumb"><span>工作台</span><span aria-hidden="true">/</span><strong id="workbenchCrumb">岗位库</strong></div></div>
+        <div class="wb-topbar-actions">
+          <button class="wb-button wb-button-outline" type="button" data-open-workbench-preferences>显示偏好</button>
+          <a class="wb-icon-link" href="/workbench?view=mail" data-workbench-view="mail" aria-label="邮件与提醒" title="邮件与提醒">♧</a>
+          <a class="wb-avatar" href="/workbench?view=settings" data-workbench-view="settings" aria-label="打开设置">职</a>
+        </div>
+      </header>
+      <main class="wb-content" id="workbench-view" tabindex="-1" aria-live="polite">
+        <noscript>
+          <div class="wb-card wb-notice"><h1>岗位工作台</h1><p>开启 JavaScript 后可在五个视图间切换。现有功能仍可直接使用：</p><p><a href="/legacy/tracker">岗位管理</a> · <a href="/events">招聘事件</a> · <a href="/notifications">通知中心</a> · <a href="/settings">基础设置</a></p></div>
+        </noscript>
+      </main>
+      <footer class="wb-footer"><span>工作台新入口 · 原有岗位、邮件、通知与设置页面仍可用</span></footer>
+    </div>
+    <div class="wb-toast-region" id="workbenchToast" aria-live="polite" aria-atomic="true"></div>
+  </div>
+  <script src="/static/js/shared/api.js?v=20260917-reorg-fix"></script>
+  <script type="module" src="/static/js/workbench/bootstrap.js?v=20260929-settings"></script>
+</body>
+</html>

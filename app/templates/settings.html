@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>基础设置 · 求职作战台</title>
+  <link rel="stylesheet" href="/static/app.css?v=20260905-usage-charts">
+</head>
+<body>
+  {% set active_page = 'settings' %}
+  {% include '_sidebar.html' %}
+  <main class="workspace settings">
+    <header class="settings-intro">
+      <div>
+        <h1>基础设置</h1>
+      </div>
+      <span class="settings-count">04 个设置组</span>
+    </header>
+
+    <p class="muted">本地代理可在<a href="/workbench?view=settings&amp;section=models">工作台模型设置</a>统一配置，并为每个模型分别开启。</p>
+
+    <section class="settings-list" aria-label="设置分组">
+      <details class="setting-row">
+        <summary class="setting-summary">
+          <span class="setting-number">01</span>
+          <span class="setting-title"><strong>界面偏好</strong></span>
+          <span class="setting-description">主题与信息密度</span>
+          <span class="setting-chevron" aria-hidden="true"></span>
+        </summary>
+        <div class="setting-panel">
+          <form id="settingsForm" class="settings-form narrow-form">
+            <div class="form-grid">
+              <label for="theme">主题
+                <select id="theme" name="theme">
+                  <option value="light">瓷灰（默认）</option>
+                  <option value="dark">墨黑绿</option>
+                </select>
+              </label>
+              <label for="density">密度
+                <select id="density" name="density">
+                  <option value="comfortable">舒展</option>
+                  <option value="compact">紧凑</option>
+                </select>
+              </label>
+              <label for="poetryPreset">首页诗词
+                <select id="poetryPreset" name="poetry_preset">
+                  <option value="random">随机宋词</option>
+                  <option value="shuidiao">水调歌头</option><option value="dielianhua">蝶恋花</option><option value="qingpingle">清平乐</option><option value="yulinling">雨霖铃</option><option value="jiangchengzi">江城子</option><option value="nian">念奴娇</option>
+                </select>
+              </label>
+            </div>
+            <div class="settings-actions">
+              <button class="button primary" type="submit">保存偏好</button>
+              <p id="settingsFeedback" class="feedback" role="status"></p>
+            </div>
+          </form>
+        </div>
+      </details>
+
+      <details class="setting-row">
+        <summary class="setting-summary">
+          <span class="setting-number">02</span>
+          <span class="setting-title"><strong>模型池与路由</strong></span>
+          <span id="llmConfigBadge" class="tag">未配置</span>
+          <span class="setting-chevron" aria-hidden="true"></span>
+        </summary>
+        <div class="setting-panel">
+          <p class="credential-note">已保存的模型以卡片管理；新建与编辑在弹窗中完成，密钥只写入操作系统凭据库。</p>
+          <div id="llmCardGrid" class="card-grid" aria-live="polite"></div>
+          <div class="routing-bar">
+            <label class="switch"><input id="llmAutoSelect" type="checkbox"><span>自动选择可用模型</span></label>
+            <label class="routing-field">默认模型<select id="llmDefaultConfig"><option value="">不指定</option></select></label>
+            <label class="routing-field">邮件解析模型<select id="llmEmailModel" aria-label="邮件解析使用的模型"><option value="">跟随全局路由</option></select></label>
+            <label class="routing-field">同时调用数量<input id="llmMaxParallel" type="number" min="1" max="8" step="1" value="1"></label>
+            <button id="saveLLMRouting" class="button quiet routing-save" type="button">保存路由</button>
+          </div>
+          <p id="llmConfigFeedback" class="feedback" role="status" aria-live="polite"></p>
+        </div>
+      </details>
+
+      <details class="setting-row">
+        <summary class="setting-summary">
+          <span class="setting-number">03</span>
+          <span class="setting-title"><strong>招聘邮箱</strong></span>
+          <span class="tag">增量 IMAP · 正则主筛选</span>
+          <span class="setting-chevron" aria-hidden="true"></span>
+        </summary>
+        <div class="setting-panel">
+          <p class="credential-note">账户以卡片管理，新建在弹窗中完成。只读取你主动配置的账户，不下载附件；授权码只进入操作系统凭据库。</p>
+          <div id="emailCardGrid" class="card-grid" aria-live="polite"></div>
+
+          <div class="filter-rule-card">
+            <strong>拉取筛选规则</strong>
+            <label for="emailRegex">正则规则（主筛选）
+              <span class="regex-row">
+                <input id="emailRegex" maxlength="500" placeholder="(面试|笔试|测评|offer|校招|实习)" autocomplete="off" spellcheck="false">
+                <button id="validateRegex" class="button quiet" type="button">校验正则</button>
+              </span>
+            </label>
+            <p class="hint">同步时在发件人、主题和正文文本上执行这条规则。未命中的邮件只保留必要摘要，不进入 AI 清洗；留空表示不启用正则筛选。</p>
+            <details class="regex-preview">
+              <summary>预览正则命中</summary>
+              <label for="emailRegexPreviewText">测试文本
+                <textarea id="emailRegexPreviewText" rows="3" placeholder="粘贴发件人、主题或正文片段"></textarea>
+              </label>
+              <button id="previewEmailRegex" class="button quiet" type="button">运行预览</button>
+              <p id="emailRegexPreviewResult" class="feedback" role="status" aria-live="polite"></p>
+            </details>
+            <label for="emailKeywords">旧版关键词（兼容保留）
+              <textarea id="emailKeywords" rows="3"></textarea>
+            </label>
+            <p class="hint">新的同步流程以正则规则为准，不再要求正则和关键词同时命中。关键词只用于兼容旧配置和旧数据。</p>
+            <div class="filter-rule-actions">
+              <button id="saveEmailFilter" class="button primary" type="button">保存预筛规则</button>
+              <button id="openManualEmail" class="inline-link" type="button">＋ 手动添加指定邮件…</button>
+            </div>
+            <p id="emailFilterFeedback" class="feedback" role="status"></p>
+          </div>
+          <p id="emailAccountFeedback" class="feedback" role="status" aria-live="polite"></p>
+        </div>
+      </details>
+
+      <details class="setting-row">
+        <summary class="setting-summary">
+          <span class="setting-number">04</span>
+          <span class="setting-title"><strong>通知策略</strong></span>
+          <span id="policyBadge" class="tag">多策略配置</span>
+          <span class="setting-chevron" aria-hidden="true"></span>
+        </summary>
+        <div class="setting-panel">
+          <p class="credential-note">每条策略一张卡：名称、渠道与提醒范围一目了然；事件按所有启用策略分别判断与发送。Push URL 只进入操作系统凭据库。</p>
+          <div id="policyCardGrid" class="card-grid" aria-live="polite"></div>
+          <p id="notificationPolicyFeedback" class="feedback" role="status" aria-live="polite"></p>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <dialog id="llmConfigDialog" aria-labelledby="llmConfigDialogTitle">
+    <form id="llmConfigForm" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <p class="page-path">模型池 / 配置</p>
+          <h2 id="llmConfigDialogTitle">新建模型配置</h2>
+        </div>
+        <button class="icon-button" type="button" data-close aria-label="关闭">×</button>
+      </div>
+      <input type="hidden" id="llmConfigId">
+      <label for="llmDisplayName">显示名称<input id="llmDisplayName" name="display_name" maxlength="200" required placeholder="主力模型"></label>
+      <div class="form-grid">
+        <div class="combo combo-select" id="providerCombo">
+          <label for="llmProvider">API 格式（点击选择）</label>
+          <span class="select-row">
+            <input id="llmProvider" name="provider" value="Chat Completions" maxlength="100" required autocomplete="off" spellcheck="false" readonly placeholder="点击选择调用协议">
+            <span class="combo-chevron" aria-hidden="true">▾</span>
+          </span>
+          <div class="combo-menu" id="providerComboMenu" role="listbox" aria-label="可选 API 格式"></div>
+        </div>
+        <div class="combo" id="modelCombo">
+          <label for="llmModel">Model（可获取列表）</label>
+          <span class="model-row">
+            <input id="llmModel" name="model" maxlength="200" required autocomplete="off" spellcheck="false" placeholder="deepseek-v4-flash">
+            <button id="fetchModels" class="button quiet" type="button">获取模型</button>
+          </span>
+          <div class="combo-menu" id="modelComboMenu" role="listbox" aria-label="可选模型"></div>
+        </div>
+      </div>
+      <p class="hint" id="providerExample">选择 API 格式后，这里会显示对应的协议说明与示例地址。</p>
+      <label for="llmApiBase">API Base（可选）
+        <input id="llmApiBase" name="api_base" type="url" maxlength="1000" autocomplete="off" placeholder="https://api.example.com/v1">
+      </label>
+      <div class="form-grid">
+        <label for="llmTemperature">Temperature
+          <input id="llmTemperature" name="temperature" type="number" min="0" max="2" step="0.1" value="0.2" required>
+        </label>
+        <label for="llmTimeout">超时（秒）
+          <input id="llmTimeout" name="timeout_seconds" type="number" min="5" max="300" step="1" value="60" required>
+        </label>
+      </div>
+      <label for="llmApiKey">API Key（本地模型可留空）
+        <input id="llmApiKey" name="api_key" type="password" autocomplete="new-password" placeholder="只写入操作系统凭据库，不回显；输入新值即覆盖旧密钥">
+      </label>
+      <label class="checkbox-setting" for="llmEnabled"><input id="llmEnabled" type="checkbox" checked><span>保存后立即启用</span></label>
+      <div class="dialog-actions">
+        <button class="button quiet" type="button" id="cancelLLMConfig">取消</button>
+        <button class="button primary" type="submit">保存配置</button>
+      </div>
+      <p class="credential-note">OpenAI 兼容接口的 Provider 填 <code>openai</code>。SenseNova 官方地址会自动使用兼容 JSON 模式。</p>
+      <p id="llmDialogFeedback" class="feedback" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <dialog id="usageDialog" aria-labelledby="usageDialogTitle">
+    <div class="dialog-head">
+      <div>
+        <h2 id="usageDialogTitle">用量统计</h2>
+        <p class="usage-subtitle">点击指标查看趋势，统计日期按 UTC+8。</p>
+      </div>
+      <button class="icon-button" type="button" data-close aria-label="关闭">×</button>
+    </div>
+    <div id="usageMetrics" class="usage-metrics" role="group" aria-label="选择统计指标"></div>
+    <div class="usage-chart-toolbar">
+      <div><h3 id="usageChartTitle">Token 合计</h3><p id="usageChartUnit" class="usage-subtitle"></p></div>
+      <div id="usagePeriods" class="usage-periods" role="group" aria-label="查看周期">
+        <button type="button" data-usage-days="1" aria-pressed="false">今天</button>
+        <button type="button" data-usage-days="7" aria-pressed="true">近 7 天</button>
+        <button type="button" data-usage-days="30" aria-pressed="false">近 30 天</button>
+        <button type="button" data-usage-days="90" aria-pressed="false">近 90 天</button>
+      </div>
+    </div>
+    <div id="usageChart" class="usage-chart" aria-busy="false"></div>
+    <p id="usagePointReadout" class="usage-point-readout" aria-live="polite">悬停或点击曲线查看数值；聚焦图表后可用左右方向键切换日期。</p>
+    <form id="usageDateForm" class="usage-dates">
+      <label>开始日期<input id="usageStart" type="date" required></label>
+      <label>结束日期<input id="usageEnd" type="date" required></label>
+      <button class="button quiet" type="submit">查看日期范围</button>
+      <button class="text-button" id="usageRefresh" type="button">刷新</button>
+    </form>
+    <p id="usageFeedback" class="feedback" role="status" aria-live="polite"></p>
+    <p id="usageLifetime" class="usage-lifetime"></p>
+    <p id="usageHistoryNote" class="hint"></p>
+    <p class="hint">统计覆盖网页解析、邮件识别与配置测试，失败也计入调用次数。响应时间按调用次数加权平均；Token 合计为输入与输出之和，未返回用量的调用按 0 累计。</p>
+    <div class="dialog-actions">
+      <button class="button quiet" type="button" data-close>关闭</button>
+    </div>
+  </dialog>
+
+  <dialog id="emailAccountDialog" aria-labelledby="emailAccountDialogTitle">
+    <form id="emailAccountForm" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <p class="page-path">招聘邮箱 / 账户</p>
+          <h2 id="emailAccountDialogTitle">添加邮箱账户</h2>
+        </div>
+        <button class="icon-button" type="button" data-close aria-label="关闭">×</button>
+      </div>
+      <input type="hidden" id="emailAccountId">
+      <div class="form-grid">
+        <label for="emailProvider">邮箱类型
+          <select id="emailProvider" required>
+            <option value="qq">QQ 邮箱</option>
+            <option value="163">163 邮箱</option>
+            <option value="custom">Custom IMAP</option>
+          </select>
+        </label>
+        <label for="emailAddress">邮箱地址
+          <input id="emailAddress" type="email" maxlength="320" required autocomplete="email">
+        </label>
+      </div>
+      <div id="customImapFields" class="form-grid" hidden>
+        <label for="imapHost">IMAP Host
+          <input id="imapHost" maxlength="255" autocomplete="off" placeholder="imap.example.com">
+        </label>
+        <label for="imapPort">IMAP Port
+          <input id="imapPort" type="number" min="1" max="65535" value="993">
+        </label>
+        <label for="imapUsername">Username（可选）
+          <input id="imapUsername" maxlength="320" autocomplete="username">
+        </label>
+        <label class="checkbox-setting" for="imapSsl">
+          <input id="imapSsl" type="checkbox" checked>
+          <span>使用 SSL</span>
+        </label>
+      </div>
+      <div class="form-grid">
+        <label for="emailAuthorizationCode">IMAP 授权码
+          <input id="emailAuthorizationCode" type="password" autocomplete="new-password" placeholder="编辑时留空保持不变">
+        </label>
+        <label for="emailInterval">检查间隔（分钟）
+          <input id="emailInterval" type="number" min="1" max="1440" value="15" required>
+        </label>
+        <label for="emailLookback">只回看最近（天）
+          <input id="emailLookback" type="number" min="1" max="3650" step="1" placeholder="留空不限" autocomplete="off">
+        </label>
+      </div>
+      <p class="hint">回看窗口按 IMAP 内部日期限制拉取范围：首次同步或邮箱游标重置时，只回看最近 N 天，避免全量回补历史邮件；留空表示不限。</p>
+      <div class="dialog-actions">
+        <button class="button quiet" type="button" data-close>取消</button>
+        <button class="button primary" type="submit">保存邮箱账户</button>
+      </div>
+      <p id="emailAccountFeedback" class="feedback" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <dialog id="manualEmailDialog" aria-labelledby="manualEmailDialogTitle">
+    <form id="manualEmailForm" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <p class="page-path">招聘邮箱 / 手动添加</p>
+          <h2 id="manualEmailDialogTitle">手动添加指定邮件</h2>
+        </div>
+        <button class="icon-button" type="button" data-close aria-label="关闭">×</button>
+      </div>
+      <div class="form-grid">
+        <label for="manualEmailAccount">来源账户
+          <select id="manualEmailAccount" required></select>
+        </label>
+        <label for="manualEmailMessageId">Message-ID（可选）
+          <input id="manualEmailMessageId" maxlength="998" placeholder="&lt;msg-123@example.com&gt;">
+        </label>
+      </div>
+      <label for="manualEmailSender">发件人
+        <input id="manualEmailSender" maxlength="500" required placeholder="hr@example.com">
+      </label>
+      <label for="manualEmailSubject">主题
+        <input id="manualEmailSubject" maxlength="1000" required placeholder="面试邀请 - 示例科技">
+      </label>
+      <label for="manualEmailBody">正文粘贴（精简文本）
+        <textarea id="manualEmailBody" rows="5" placeholder="粘贴邮件正文；仅保存系统所需的精简文本"></textarea>
+      </label>
+      <p class="hint">手动添加的邮件跳过预筛，但仍会经过 LLM 识别与人工关联确认，不会自动修改求职状态。</p>
+      <div class="dialog-actions">
+        <button class="button quiet" type="button" data-close>取消</button>
+        <button class="button primary" type="submit">加入识别队列</button>
+      </div>
+      <p id="manualEmailFeedback" class="feedback" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <dialog id="policyDialog" aria-labelledby="policyDialogTitle">
+    <form id="notificationPolicyForm" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <p class="page-path">通知策略 / 配置</p>
+          <h2 id="policyDialogTitle">新建通知策略</h2>
+        </div>
+        <button class="icon-button" type="button" data-close aria-label="关闭">×</button>
+      </div>
+      <input type="hidden" id="policyId">
+      <label for="policyName">策略名称
+        <input id="policyName" maxlength="200" required placeholder="重要事件 · 即时提醒">
+      </label>
+      <label class="checkbox-setting" for="desktopEnabled">
+        <input id="desktopEnabled" type="checkbox" checked>
+        <span>命中事件发送桌面通知</span>
+      </label>
+      <label class="checkbox-setting" for="pushEnabled">
+        <input id="pushEnabled" type="checkbox">
+        <span>同时发送第三方 Push</span>
+      </label>
+      <div class="form-grid">
+        <label for="pushProvider">Push Provider
+          <select id="pushProvider">
+            <option value="ntfy">ntfy</option>
+            <option value="bark">Bark</option>
+            <option value="custom">其他 Apprise URL</option>
+          </select>
+        </label>
+        <label for="pushUrl">Apprise URL
+          <input id="pushUrl" type="password" autocomplete="new-password" placeholder="留空保持现有配置">
+        </label>
+      </div>
+      <label class="checkbox-setting" for="clearPushUrl">
+        <input id="clearPushUrl" type="checkbox">
+        <span>清除已保存的 Push URL</span>
+      </label>
+      <fieldset class="event-policy">
+        <legend>即时提醒事件</legend>
+        <label><input type="checkbox" name="importantEvent" value="ASSESSMENT" checked> 测评</label>
+        <label><input type="checkbox" name="importantEvent" value="WRITTEN_TEST" checked> 笔试</label>
+        <label><input type="checkbox" name="importantEvent" value="INTERVIEW" checked> 面试</label>
+        <label><input type="checkbox" name="importantEvent" value="INTERVIEW_CHANGED" checked> 面试变更</label>
+        <label><input type="checkbox" name="importantEvent" value="OFFER" checked> Offer</label>
+        <label><input type="checkbox" name="importantEvent" value="APPLICATION_RECEIVED"> 收到回复</label>
+        <label><input type="checkbox" name="importantEvent" value="REJECTED"> 拒绝</label>
+        <label><input type="checkbox" name="importantEvent" value="RECRUITMENT_MARKETING"> 招聘营销</label>
+        <label><input type="checkbox" name="importantEvent" value="OTHER"> 其他</label>
+      </fieldset>
+      <label class="checkbox-setting" for="notifyDeadline">
+        <input id="notifyDeadline" type="checkbox" checked>
+        <span>有明确截止时间且需要行动时提醒</span>
+      </label>
+      <label class="checkbox-setting" for="policyEnabled"><input id="policyEnabled" type="checkbox" checked><span>保存后立即启用</span></label>
+      <div class="dialog-actions">
+        <button class="button quiet" type="button" data-close>取消</button>
+        <button class="button primary" type="submit">保存通知策略</button>
+      </div>
+      <p id="notificationPolicyFeedback" class="feedback" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <script src="/static/js/shared/api.js?v=20260917-reorg-fix" defer></script>
+  <script src="/static/js/shared/dom.js?v=20260917-reorg-fix" defer></script>
+  <script src="/static/app.js?v=20260917-reorg-fix" defer></script>
+  <script src="/static/js/pages/settings.js?v=20260917-reorg-fix" defer></script>
+  <script src="/static/js/pages/usage-charts.js?v=20260917-reorg-fix" defer></script>
+  <script src="/static/js/pages/settings-integrations.js?v=20260917-reorg-fix" defer></script>
+</body>
+</html>

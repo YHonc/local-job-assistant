@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>通知中心 · 求职作战台</title>
+  <link rel="stylesheet" href="/static/app.css?v=20260905-event-status">
+</head>
+<body>
+  {% set active_page = 'notifications' %}
+  {% include '_sidebar.html' %}
+  <main class="workspace">
+    <header class="topbar">
+      <div>
+        <h1>通知中心</h1>
+      </div>
+      <a class="button quiet" href="/settings">通知设置</a>
+    </header>
+    <section class="toolbar event-toolbar" aria-label="通知筛选">
+      <select id="notificationStatusFilter" aria-label="按发送状态筛选">
+        <option value="">所有状态</option>
+        <option value="sent">已发送</option>
+        <option value="failed">失败</option>
+        <option value="pending">等待发送</option>
+        <option value="sending">发送中</option>
+      </select>
+      <select id="notificationProviderFilter" aria-label="按渠道筛选">
+        <option value="">所有渠道</option>
+        <option value="desktop">桌面</option>
+        <option value="push">Push</option>
+      </select>
+      <button id="refreshNotifications" class="button quiet" type="button">刷新</button>
+    </section>
+    <p id="notificationFeedback" class="feedback" role="status" aria-live="polite"></p>
+    <section id="notificationList" class="notification-list" aria-live="polite"></section>
+  </main>
+  <script src="/static/js/shared/api.js?v=20260917-reorg-fix" defer></script>
+  <script src="/static/js/shared/dom.js?v=20260917-reorg-fix" defer></script>
+  <script src="/static/app.js?v=20260917-reorg-fix" defer></script>
+  <script src="/static/js/pages/notifications.js?v=20260917-reorg-fix" defer></script>
+</body>
+</html>

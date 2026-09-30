@@ -1,0 +1,147 @@
+/* Shared motion and progress controls, tuned for dense lists and keyboard use. */
+.wb-app { --wb-success: #237653; --wb-motion-fast: 120ms; --wb-motion-dialog: 220ms; --wb-ease: cubic-bezier(.2, 0, 0, 1); }
+.wb-app[data-theme="dark"] { --wb-success: #8fd7b4; }
+.wb-button, .wb-job-card, .wb-chip { transition: color var(--wb-motion-fast) ease, background-color var(--wb-motion-fast) ease, border-color var(--wb-motion-fast) ease; }
+.wb-button:hover, .wb-job-card:hover { transform: none; }
+.wb-dialog[open] { animation: wb-dialog-enter var(--wb-motion-dialog) var(--wb-ease); }
+.wb-dialog::backdrop { animation: wb-backdrop-enter var(--wb-motion-dialog) ease; }
+.wb-facet-filter[open] .wb-facet-popover, .wb-model-more[open]>div { animation: wb-menu-enter 150ms var(--wb-ease); }
+@keyframes wb-dialog-enter { from { opacity: 0; transform: translateY(8px) scale(.985); } to { opacity: 1; transform: none; } }
+@keyframes wb-backdrop-enter { from { background: transparent; } }
+@keyframes wb-menu-enter { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.wb-job-list[aria-busy="true"] { opacity: .65; pointer-events: none; }
+.wb-job-list { transition: opacity var(--wb-motion-fast) ease; }
+.wb-categories-card { padding: 16px 18px; }
+.wb-categories-card .wb-section-heading p { display: none; }
+.wb-category-cloud { gap: 6px; }
+.wb-category-cloud .wb-chip { border-radius: 8px; min-height: 32px; padding: 5px 10px; }
+.wb-filter-form { gap: 10px; }
+@media (min-width: 1151px) {
+  .wb-filter-form { grid-template-columns: minmax(240px, 1fr) minmax(470px, 1.4fr); align-items: end; }
+  .wb-filter-form>.wb-advanced-filters { grid-column: 1 / -1; }
+  .wb-filter-topline .wb-search { min-width: 130px; }
+  .wb-filter-form>.wb-filter-grid { flex-wrap: nowrap; }
+  .wb-filter-form>.wb-filter-grid .wb-field, .wb-filter-form>.wb-filter-grid .wb-facet-field { min-width: 100px; }
+}
+.wb-filter-grid .wb-field, .wb-facet-field { flex: 1 1 130px; }
+.wb-active-filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.wb-active-filters:empty { display: none; }
+.wb-filter-token { margin-top: 10px; border: 1px solid var(--wb-line); color: var(--wb-primary); background: var(--wb-primary-soft); border-radius: 6px; padding: 4px 9px; font-size: 12px; }
+.wb-job-list[data-layout="rows"] .wb-progress-card { grid-template-columns: 20px minmax(0, 1.6fr) minmax(170px, 1fr) 224px; gap: 24px; min-height: 116px; padding: 20px 24px; border-color: color-mix(in srgb, var(--wb-line) 80%, transparent); }
+.wb-progress-card .wb-job-copy a { text-decoration: none; }
+.wb-progress-card .wb-job-copy a:hover { color: var(--wb-primary); }
+.wb-progress-card .wb-job-copy strong { font-size: 15px; line-height: 1.55; white-space: normal; overflow-wrap: anywhere; }
+.wb-progress-card .wb-job-copy span { font-size: 12px; margin-top: 5px; white-space: normal; overflow-wrap: anywhere; }
+.wb-job-list .wb-progress-card .wb-job-meta { display: flex; flex-wrap: wrap; gap: 7px; align-content: center; }
+.wb-job-added { flex-basis: 100%; margin-top: 3px; color: var(--wb-muted); font-size: 12px; line-height: 1.6; font-variant-numeric: tabular-nums; }
+.wb-job-added time { white-space: nowrap; }
+.wb-job-controls { min-width: 0; display: grid; justify-items: start; gap: 12px; padding-left: 24px; border-left: 1px solid var(--wb-line); }
+.wb-job-controls .wb-quick-status { width: 132px; }
+.wb-job-list[data-layout] .wb-progress-card .wb-job-controls > * { grid-column: auto; grid-row: auto; }
+.wb-job-salary { width: 100%; font-size: 13px; font-weight: 600; margin-top: 4px; color: var(--wb-ink); }
+.wb-job-list .wb-progress-card .wb-job-actions { display: flex; flex-wrap: wrap; justify-content: flex-start; align-items: center; gap: 8px 16px; }
+.wb-progress-card .wb-job-actions .wb-text-button { padding: 4px 0; }
+.wb-progress-card .wb-job-actions a { text-decoration: none; }
+.wb-quick-status { min-width: 0; --status-color: var(--wb-muted); }
+.wb-quick-status[data-status="已投递"] { --status-color: var(--wb-info); }
+.wb-quick-status[data-status="待面试"], .wb-quick-status[data-status="1面"], .wb-quick-status[data-status="2面"], .wb-quick-status[data-status="3面"], .wb-quick-status[data-status="HR面"] { --status-color: var(--wb-success); }
+.wb-quick-status[data-status="拒绝"] { --status-color: var(--wb-danger); }
+.wb-quick-status select { width: 100%; min-height: 36px; border: 1px solid color-mix(in srgb, var(--status-color) 24%, var(--wb-line)); border-radius: 8px; background: color-mix(in srgb, var(--status-color) 7%, var(--wb-surface)); color: var(--status-color); padding: 6px 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.wb-quick-status option { color: var(--wb-ink); background: var(--wb-surface); }
+.wb-job-list[data-layout="cards"] .wb-progress-card { grid-template-columns: 20px minmax(0,1fr); }
+.wb-job-list[data-layout="cards"] .wb-job-controls { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--wb-line); padding: 14px 0 0; }
+.wb-behavior-settings { padding: 20px 24px; margin: 0 0 18px; }
+.wb-behavior-settings h2 { font-size: 17px; margin-bottom: 8px; }
+.wb-behavior-settings>p { color: var(--wb-muted); font-size: 12px; }
+.wb-behavior-settings form { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
+.wb-behavior-settings .wb-check { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.wb-behavior-settings .wb-field { max-width: 180px; }
+.wb-behavior-settings .wb-hint { flex-basis: 100%; }
+.wb-behavior-settings [role="status"] { color: var(--wb-muted); font-size: 12px; }
+.wb-health-settings { border: 1px solid var(--wb-line); box-shadow: none; padding: 20px 24px 16px; }
+.wb-health-settings form { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px 24px; }
+.wb-health-heading { display: flex; align-items: center; gap: 12px; }
+.wb-health-icon { display: grid; place-items: center; width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px; color: var(--wb-primary); background: var(--wb-primary-soft); }
+.wb-health-icon svg { width: 22px; height: 22px; }
+.wb-health-settings h2 { margin: 0 0 4px; font-size: 15px; line-height: 1.4; }
+.wb-health-heading p { margin: 0; font-size: 12px; line-height: 1.5; color: var(--wb-muted); }
+.wb-health-toggle { display: flex; align-items: center; gap: 9px; position: relative; cursor: pointer; }
+.wb-health-toggle input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; z-index: 1; cursor: pointer; }
+.wb-health-track { width: 36px; height: 21px; border-radius: 20px; background: var(--wb-muted); position: relative; transition: background-color var(--wb-motion-fast); }
+.wb-health-track::after { content: ''; position: absolute; top: 3px; left: 3px; width: 15px; height: 15px; border-radius: 50%; background: #fff; transition: transform var(--wb-motion-fast); }
+.wb-health-toggle input:checked + .wb-health-track { background: var(--wb-primary); }
+.wb-health-toggle input:checked + .wb-health-track::after { transform: translateX(15px); }
+.wb-health-toggle input:focus-visible + .wb-health-track { outline: 2px solid var(--wb-primary); outline-offset: 4px; }
+.wb-health-toggle-text { min-width: 36px; font-size: 12px; color: var(--wb-muted); }
+.wb-health-toggle-text::after { content: '已关闭'; }
+.wb-health-toggle input:checked ~ .wb-health-toggle-text::after { content: '已开启'; color: var(--wb-primary); }
+.wb-health-controls { grid-column: 1 / -1; display: flex; align-items: center; flex-wrap: wrap; gap: 12px 20px; padding-top: 16px; border-top: 1px solid var(--wb-line); }
+.wb-health-interval { display: flex; align-items: center; gap: 12px; color: var(--wb-ink); font-size: 13px; }
+.wb-health-number { display: flex; align-items: center; gap: 6px; border: 1px solid var(--wb-line); border-radius: 8px; padding: 0 10px; background: var(--wb-surface); }
+.wb-health-number:focus-within { border-color: var(--wb-primary); box-shadow: 0 0 0 2px var(--wb-primary-soft); }
+.wb-integrations .wb-health-settings .wb-health-number input { width: 62px; min-width: 0; min-height: 36px; padding: 6px 0; border: 0; outline: none; box-shadow: none; background: transparent; color: var(--wb-ink); font: inherit; }
+.wb-health-number>span { white-space: nowrap; }
+.wb-health-number>span, .wb-health-scope { color: var(--wb-muted); font-size: 12px; }
+.wb-health-save { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+.wb-health-save .wb-button { min-height: 36px; padding: 7px 14px; font-size: 12px; border-radius: 8px; }
+.wb-health-settings .wb-health-note { grid-column: 1 / -1; margin: -4px 0 0; color: var(--wb-muted); font-size: 12px; line-height: 1.7; }
+@media (max-width: 600px) {
+  .wb-health-settings form { gap: 16px 10px; }
+  .wb-health-heading { gap: 9px; }
+  .wb-health-icon { display: none; }
+  .wb-health-toggle { gap: 6px; }
+  .wb-health-controls { gap: 12px; }
+  .wb-health-scope { order: 3; flex-basis: 100%; }
+  .wb-health-save { gap: 6px; }
+}
+.wb-integrations .wb-model-row { grid-template-columns: 34px minmax(160px, 1fr) 95px auto; gap: 14px; padding: 22px 0; }
+.wb-model-labels { display: grid; gap: 7px; justify-items: start; }
+.wb-model-state { color: var(--wb-success); background: color-mix(in srgb, var(--wb-success) 9%, var(--wb-surface)); padding: 4px 8px; border-radius: 6px; white-space: nowrap; }
+.wb-model-row.is-paused .wb-model-state { color: var(--wb-muted); background: var(--wb-surface-mid); }
+.wb-model-row.is-paused .wb-model-info { opacity: 1; }
+.wb-model-row.is-paused .wb-model-symbol { color: var(--wb-muted); background: var(--wb-surface-mid); }
+.wb-model-row-actions { gap: 10px; white-space: nowrap; }
+.wb-model-protocol { display: block; font-size: 11px; }
+.wb-health-result { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; margin: 7px 0 3px; color: var(--wb-muted); }
+.wb-health-result[data-health="passed"] { color: var(--wb-success); }
+.wb-health-result[data-health="failed"], .wb-health-result[data-health="interrupted"] { color: var(--wb-danger); }
+.wb-health-result .wb-spinner { width: 12px; height: 12px; }
+.wb-model-more hr { border: 0; border-top: 1px solid var(--wb-line); margin: 5px 0; }
+.wb-dialog.wb-model-editor { inset: 0; margin: auto; padding: 0; width: min(640px, calc(100vw - 32px)); max-height: min(850px, calc(100dvh - 40px)); border-radius: 16px; overflow: hidden; }
+.wb-dialog.wb-model-editor[open] { display: flex; }
+.wb-model-editor>form { display: flex; flex-direction: column; width: 100%; min-height: 0; max-height: inherit; }
+.wb-model-editor-head, .wb-model-footer { flex-shrink: 0; }
+.wb-model-scroll { overflow-y: auto; overscroll-behavior: contain; min-height: 0; }
+.wb-model-parameters { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.wb-model-footer { justify-content: flex-end; }
+.wb-model-footer .wb-feedback { flex: 1; overflow-wrap: anywhere; }
+.wb-toast { display: flex; align-items: center; gap: 14px; }
+.wb-status-history { border-top: 1px solid var(--wb-line); padding: 16px 0; font-size: 13px; }
+.wb-status-history h3 { font-size: 15px; }
+.wb-status-history time, .wb-status-history small { color: var(--wb-muted); }
+@media (max-width: 1150px) {
+  .wb-integrations .wb-model-row { grid-template-columns: 30px minmax(0,1fr) 90px; }
+  .wb-model-row .wb-model-row-actions { grid-column: 2 / -1; grid-row: auto; }
+  .wb-job-list[data-layout="rows"] .wb-progress-card { grid-template-columns: 20px minmax(0,1fr) 224px; gap: 12px 18px; }
+  .wb-job-list[data-layout="rows"] .wb-progress-card .wb-job-main { grid-column: 2; grid-row: 1; }
+  .wb-job-list[data-layout="rows"] .wb-progress-card .wb-job-meta { grid-column: 2; grid-row: 2; padding-left: 50px; }
+  .wb-job-list[data-layout="rows"] .wb-job-controls { grid-column: 3; grid-row: 1 / 3; }
+}
+@media (max-width: 800px) {
+  .wb-job-list[data-layout="rows"] .wb-progress-card { grid-template-columns: 18px minmax(0,1fr); gap: 12px; padding: 16px; }
+  .wb-job-list[data-layout="rows"] .wb-job-controls { grid-column: 2; grid-row: 3; border-left: 0; border-top: 1px solid var(--wb-line); padding: 12px 0 0; display: flex; align-items: center; flex-wrap: wrap; gap: 10px 20px; }
+  .wb-job-list[data-layout="rows"] .wb-progress-card .wb-job-meta { padding-left: 0; }
+  .wb-job-list[data-layout="cards"] { grid-template-columns: repeat(auto-fill, minmax(min(100%, 310px), 1fr)); }
+}
+@media (max-width: 600px) {
+  .wb-categories-card, .wb-toolbar-card, .wb-behavior-settings { padding: 14px; }
+  .wb-integrations .wb-model-row { grid-template-columns: 26px minmax(0,1fr); gap: 10px; }
+  .wb-model-labels { grid-column: 2; display: flex; align-items: center; }
+  .wb-model-row .wb-model-row-actions { grid-column: 2; flex-wrap: wrap; gap: 13px; }
+  .wb-model-editor-head, .wb-model-section, .wb-model-footer { padding: 16px; }
+  .wb-model-parameters { grid-template-columns: 1fr; gap: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wb-app *, .wb-app *::before, .wb-app *::after, .wb-dialog::backdrop { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+.wb-app[data-reduce-motion="true"] *, .wb-app[data-reduce-motion="true"] .wb-dialog::backdrop { animation: none !important; transition: none !important; scroll-behavior: auto !important; }

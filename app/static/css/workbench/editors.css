@@ -1,0 +1,93 @@
+.wb-dialog {
+  width: min(720px, calc(100vw - 28px));
+  max-width: 100%;
+  max-height: min(92vh, 980px);
+  padding: 0;
+  overflow: hidden;
+  color: var(--wb-ink);
+  background: var(--wb-surface);
+  border: 1px solid var(--wb-line);
+  border-radius: var(--wb-radius-xl);
+  box-shadow: var(--wb-shadow);
+}
+.wb-dialog::backdrop { background: rgb(13 23 41 / 50%); backdrop-filter: blur(3px); }
+.wb-dialog[open] { display: grid; }
+.wb-job-form, .wb-company-panel, .wb-preferences-form { min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
+.wb-dialog.wb-preferences-dialog > .wb-preferences-form { display: flex; flex-direction: column; gap: 0; max-height: min(90vh, 840px); overflow-y: auto; }
+.wb-dialog-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding: 21px 23px 16px; background: var(--wb-surface-low); border-bottom: 1px solid var(--wb-line); }
+.wb-dialog-heading h2 { margin: 0 0 5px; font-size: 21px; letter-spacing: -.035em; }
+.wb-dialog-subtitle { margin: 0; color: var(--wb-muted); font-size: var(--wb-type-body); }
+.wb-dialog-heading .wb-button { flex: 0 0 auto; }
+.wb-job-editor-scroll, .wb-preferences-form > .wb-editor-section { min-height: 0; overflow: auto; }
+.wb-job-editor-scroll { padding: 5px 22px 18px; }
+.wb-editor-section { padding: 17px 0; border-bottom: 1px solid color-mix(in srgb, var(--wb-line) 60%, transparent); }
+.wb-editor-section:last-child { border-bottom: 0; }
+.wb-editor-section h3 { margin: 0 0 11px; font-size: var(--wb-type-emphasis); }
+.wb-editor-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.wb-field-wide { grid-column: 1 / -1; }
+.wb-field input[type="color"] { height: 39px; padding: 4px; }
+.wb-form-section-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin: 0 0 12px; }
+.wb-form-section-head h3 { margin: 0 0 3px; font-size: var(--wb-type-emphasis); }
+.wb-form-section-head p, .wb-help-text { margin: 0; color: var(--wb-muted); font-size: var(--wb-type-small); }
+.wb-help-text { margin-top: 8px; }
+.wb-company-mode { display: flex; gap: 16px; margin: 0 0 12px; flex-wrap: wrap; color: var(--wb-muted); font-size: var(--wb-type-body); }
+.wb-company-mode label, .wb-check-field { display: inline-flex; align-items: center; gap: 8px; }
+.wb-company-mode input, .wb-check-field input { accent-color: var(--wb-primary); }
+.wb-new-company-fields { display: grid; gap: 11px; margin-top: 12px; }
+.wb-application-create { background: color-mix(in srgb, var(--wb-primary-soft) 22%, transparent); border-radius: var(--wb-radius-md); padding-inline: 12px; }
+.wb-check-field { min-height: 38px; color: var(--wb-ink); font-size: var(--wb-type-body); font-weight: 650; }
+.wb-visible-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px 12px; }
+.wb-dialog-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 22px; background: var(--wb-surface-low); border-top: 1px solid var(--wb-line); }
+.wb-dialog-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+.wb-dialog-status { min-height: 18px; margin: 8px 22px; color: var(--wb-muted); font-size: var(--wb-type-small); }
+.wb-dialog-status[data-kind="error"] { color: var(--wb-danger); }
+.wb-dialog-status[data-kind="success"] { color: var(--wb-primary); }
+.wb-duplicate-candidates, .wb-duplicate-warning { padding: 12px; margin: 8px 0; color: var(--wb-warn); background: color-mix(in srgb, var(--wb-warn) 8%, var(--wb-surface)); border: 1px solid color-mix(in srgb, var(--wb-warn) 30%, var(--wb-line)); border-radius: var(--wb-radius-md); }
+.wb-duplicate-candidates p, .wb-duplicate-warning p { margin: 4px 0 9px; font-size: var(--wb-type-small); }
+.wb-candidate-buttons { display: flex; gap: 7px; flex-wrap: wrap; }
+.wb-company-dialog { width: min(940px, calc(100vw - 28px)); }
+.wb-company-panel { grid-template-rows: auto minmax(0, 1fr) auto; padding: 0; }
+.wb-company-layout { min-height: 360px; display: grid; grid-template-columns: minmax(220px, .8fr) minmax(0, 1.2fr); }
+.wb-company-list-panel, .wb-company-form-panel { min-width: 0; padding: 17px; overflow: auto; }
+.wb-company-list-panel { border-right: 1px solid var(--wb-line); }
+.wb-company-list-actions { display: flex; align-items: flex-end; gap: 8px; margin-bottom: 12px; }
+.wb-company-list-actions .wb-field { flex: 1; }
+.wb-company-list { display: grid; gap: 7px; }
+.wb-company-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px; background: var(--wb-surface-low); border: 1px solid var(--wb-line); border-radius: var(--wb-radius-md); }
+.wb-company-row.is-selected { border-color: var(--wb-primary); background: color-mix(in srgb, var(--wb-primary-soft) 45%, var(--wb-surface)); }
+.wb-company-row-copy { min-width: 0; display: grid; }
+.wb-company-row-copy strong, .wb-company-row-copy span { overflow: hidden; text-overflow: ellipsis; }
+.wb-company-row-copy span { color: var(--wb-muted); font-size: var(--wb-type-caption); }
+.wb-company-form-panel { border-left: 0; }
+.wb-company-form { display: grid; align-content: start; gap: 11px; }
+.wb-company-form .wb-form-section-head { align-items: center; }
+.wb-form-error { min-height: 17px; margin: 0; color: var(--wb-danger); font-size: var(--wb-type-small); }
+.wb-company-form .wb-dialog-actions { justify-content: flex-start; }
+.wb-job-dialog { width: min(920px, calc(100vw - 28px)); }
+.wb-dialog.wb-preferences-dialog { width: min(660px, calc(100vw - 28px)); max-height: min(90vh, 840px); padding: 0; overflow: hidden; }
+.wb-preferences-form > .wb-editor-section { flex: 0 0 auto; overflow: visible; padding: 15px 22px; }
+.wb-preferences-form > .wb-editor-section:first-of-type { padding-top: 17px; }
+.wb-preferences-form > .wb-editor-section:last-of-type { border-bottom: 0; }
+.wb-preferences-form > .wb-dialog-status { margin-top: 9px; margin-bottom: 0; }
+.wb-preferences-dialog .wb-check-field { display: flex; align-items: center; justify-content: flex-start; gap: 9px; min-height: 38px; }
+.wb-preferences-dialog .wb-check-field input[type="checkbox"] { width: 16px; height: 16px; flex: 0 0 16px; margin: 0; }
+.wb-preferences-dialog .wb-check-field span { min-width: 0; }
+.wb-preferences-dialog .wb-editor-grid > .wb-check-field { align-self: end; padding-bottom: 1px; }
+.wb-preferences-dialog .wb-visible-fields .wb-check-field { padding: 6px 9px; background: var(--wb-surface-low); border: 1px solid var(--wb-line); border-radius: 9px; }
+.wb-poetry { color: var(--wb-primary); font-family: Georgia, "Songti SC", "STSong", "SimSun", serif; letter-spacing: .04em; }
+.wb-footer { display: grid; gap: 4px; }
+.wb-hint-dismiss { min-height: 28px; margin-top: 6px; padding: 4px 8px; font-size: var(--wb-type-caption); }
+.wb-hint-restore { margin: 3px 0 18px; padding: 3px 0; color: var(--wb-muted); background: transparent; border: 0; font-size: var(--wb-type-caption); text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 650px) {
+  .wb-dialog-heading { padding: 17px 16px 13px; }
+  .wb-job-editor-scroll { padding-inline: 16px; }
+  .wb-editor-grid, .wb-visible-fields { grid-template-columns: 1fr; }
+  .wb-field-wide { grid-column: auto; }
+  .wb-company-layout { grid-template-columns: 1fr; }
+  .wb-company-list-panel { border-right: 0; border-bottom: 1px solid var(--wb-line); }
+  .wb-company-list-panel, .wb-company-form-panel { padding: 12px 16px; }
+  .wb-company-list { max-height: 190px; overflow: auto; }
+  .wb-dialog-footer { align-items: flex-end; padding: 12px 16px; }
+  .wb-preferences-form > .wb-editor-section { padding-inline: 16px; }
+}

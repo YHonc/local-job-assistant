@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>求职作战台</title>
+<link rel="stylesheet" href="/static/app.css?v=20260907-tracker-spacing">
+</head>
+<body>
+{% set active_page = 'tracker' %}
+{% set job_categories = ['数据分析','运营','产品','AI/算法','技术研发','市场/销售','财务/金融','咨询/战略','供应链/制造','职能/支持','其他'] %}
+{% include '_sidebar.html' %}
+<main class="workspace tracker-workspace">
+<header class="topbar">
+<div>
+<h1>岗位轨道</h1>
+</div>
+<button class="button primary" id="newJob" type="button">＋ 新增岗位</button>
+</header>
+<section class="rail" aria-labelledby="railTitle">
+<div class="rail-head">
+<div>
+<h2 id="railTitle">求职状态</h2>
+</div>
+<span id="totalCount" class="rail-total">0 个岗位</span>
+</div>
+<div id="statusRail" class="rail-items">
+</div>
+</section>
+<section class="toolbar" aria-label="岗位筛选">
+<label class="search">
+<span aria-hidden="true">⌕</span>
+<input id="search" placeholder="搜索公司、岗位、地点或类别" aria-label="搜索岗位">
+</label>
+<select id="categoryFilter" aria-label="按岗位类别筛选">
+<option value="">所有岗位类别</option>
+{% for category in job_categories %}<option>{{ category }}</option>{% endfor %}
+</select>
+<select id="companyFilter" aria-label="按公司筛选">
+<option value="">所有公司</option>
+</select>
+<select id="typeFilter" aria-label="按招聘类型筛选">
+<option value="">所有类型</option>
+</select>
+<select id="statusFilter" aria-label="按状态筛选">
+<option value="">所有状态</option>
+</select>
+</section>
+<div id="bulkActions" class="bulk-actions" hidden><span>已选 <strong id="selectedCount">0</strong> 项 <small id="selectionScope"></small></span><select id="bulkStatus" aria-label="批量设置状态"><option value="">选择状态</option>{% for status in application_statuses|default([]) %}<option>{{ status }}</option>{% endfor %}</select><button id="applyBulkStatus" class="button quiet" type="button">应用状态</button><button id="deleteSelected" class="button danger-button" type="button">删除所选</button><button id="clearSelection" class="text-button" type="button">清除选择</button></div>
+<div class="job-table-head" role="row"><span role="columnheader"><label><input id="selectAllJobs" type="checkbox" aria-label="选择当前可见岗位"></label></span><span class="job-title-header" role="columnheader"><button class="sort-button" type="button" data-sort="title">岗位 / 公司 <span aria-hidden="true">↕</span></button></span><span class="head-group" role="columnheader"><button class="sort-button" type="button" data-sort="location">地点 <span aria-hidden="true">↕</span></button><details id="locationMenu"><summary aria-label="筛选地点"><svg class="filter-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h12L9.5 8v4l-3 1V8z"/></svg></summary><div class="location-menu-panel"><div id="locationOptions" class="location-options"></div><div class="location-menu-actions"><span id="locationSummary"></span><button type="button" class="text-button" id="selectAllLocations">全部</button><button type="button" class="text-button" id="clearLocations">清空</button><button type="button" class="button quiet" id="applyLocations">完成</button></div></div></details></span><span role="columnheader"><button class="sort-button" type="button" data-sort="employment_type">类型 <span aria-hidden="true">↕</span></button></span><span role="columnheader"><button class="sort-button" type="button" data-sort="status">当前状态 <span aria-hidden="true">↕</span></button></span><span class="job-added-head" role="columnheader"><button class="sort-button" type="button" data-sort="created_at">添加时间 <span aria-hidden="true">↕</span></button><span>投递</span></span></div>
+<div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+<section id="jobList" class="job-list" aria-live="polite">
+</section>
+<div class="table-foot"><span id="visibleCount">显示 0 个岗位</span><span id="sortSummary">默认顺序</span></div>
+</main>
+<dialog id="jobDialog" aria-labelledby="dialogTitle">
+<form method="dialog" id="jobForm">
+<input type="hidden" id="jobId">
+<div class="dialog-head">
+<div>
+<p class="page-path">岗位资料</p>
+<h2 id="dialogTitle">新增岗位</h2>
+</div>
+<button type="button" class="icon-button" data-close aria-label="关闭">×</button>
+</div>
+<div id="companyEmpty" class="inline-warning" hidden>还没有公司，请先新增公司。</div>
+<label>公司<select id="company" required>
+</select>
+<button type="button" class="text-button" id="manageCompanies">管理公司</button>
+</label>
+<label>岗位名称<input id="title" required maxlength="300">
+</label>
+<div class="form-grid">
+<label>地点<input id="location">
+</label>
+<label>招聘类型<input id="employmentType" placeholder="实习 / 校招 / 社招">
+</label>
+</div>
+<label>岗位类别<select id="jobCategory">
+<option value="">自动识别</option>
+{% for category in job_categories %}<option>{{ category }}</option>{% endfor %}
+</select>
+</label>
+<label>岗位发布时间<input id="publishedAt" type="date">
+</label>
+<div class="form-grid">
+<label>来源网站<input id="sourceWebsite" maxlength="200" placeholder="公司官网 / 招聘平台">
+</label>
+<label>原始页面标题<input id="originalTitle" maxlength="500">
+</label>
+</div>
+<label>来源链接<input id="sourceUrl" type="url" maxlength="1000" placeholder="https://...">
+</label>
+<label>岗位描述<textarea id="description" rows="6" placeholder="职责、要求与其他已核对信息">
+</textarea>
+</label>
+<label>求职状态<select id="status" required>
+</select>
+</label>
+<label>备注<textarea id="notes" rows="3">
+</textarea>
+</label>
+<div class="dialog-actions">
+<button type="button" class="button quiet" data-close>取消</button>
+<button type="submit" class="button primary">保存岗位</button>
+</div>
+</form>
+</dialog>
+<dialog id="companyDialog" aria-labelledby="companyDialogTitle">
+<form method="dialog" id="companyForm">
+<div class="dialog-head">
+<h2 id="companyDialogTitle">管理公司</h2>
+<button type="button" class="icon-button" data-close aria-label="关闭">×</button>
+</div>
+<div id="companyList" class="company-list">
+</div>
+<input type="hidden" id="companyId">
+<div class="company-editor">
+<label>公司名称<input id="companyName" maxlength="200" required>
+</label>
+<label>别名（逗号或换行分隔）<textarea id="companyAliases" rows="2">
+</textarea>
+</label>
+<label>备注<textarea id="companyNotes" rows="3">
+</textarea>
+</label>
+<div class="dialog-actions">
+<button type="button" class="button quiet" id="companyCancelEdit" hidden>取消编辑</button>
+<button type="submit" class="button primary" id="companySubmit">新增公司</button>
+</div>
+</div>
+</form>
+</dialog>
+<script src="/static/js/shared/api.js?v=20260917-reorg-fix" defer></script>
+<script src="/static/js/shared/dom.js?v=20260917-reorg-fix" defer></script>
+<script src="/static/app.js?v=20260917-reorg-fix" defer></script>
+<script src="/static/js/pages/tracker.js?v=20260917-reorg-fix" defer></script>
+</body>
+</html>
