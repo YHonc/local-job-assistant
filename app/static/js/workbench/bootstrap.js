@@ -1,4 +1,4 @@
-import { createWorkbenchRouter, WORKBENCH_VIEWS } from './router.js?v=20260929-settings';
+import { createWorkbenchRouter, WORKBENCH_VIEWS } from './router.js?v=20260930-settings';
 import { mount as mountLibrary } from './views/library.js?v=20260927-cutover';
 import { mount as mountPending } from './views/pending.js?v=20260927-cutover';
 import { mount as mountFollow } from './views/follow.js?v=20260927-cutover';
@@ -193,7 +193,7 @@ window.addEventListener('pagehide', () => {
   router.dispose();
 }, { once: true });
 
-const OPTIONAL_MODULES = { mail: './views/mail.js?v=20260926-visual4', settings: './views/settings.js?v=20260929-settings' };
+const OPTIONAL_MODULES = { mail: './views/mail.js?v=20260926-visual4', settings: './views/settings.js?v=20260930-settings' };
 async function loadOptionalView(view) {
   const modulePath = OPTIONAL_MODULES[view];
   if (!modulePath) return;

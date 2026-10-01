@@ -1,11 +1,11 @@
-import { modelSummary } from '../components/model-settings.js?v=20260929-settings';
+import { modelSummary } from '../components/model-settings.js?v=20260930-settings';
 import { mountPromptSettings } from '../components/prompt-settings.js?v=20260929-settings';
 import { buttonBusy, collection, esc, fmtTime, jsonOptions, setFeedback } from '../integrations/shared.js';
 import { emailFilterRequest, modelProbeRequest, modelSaveRequest } from '../integrations/settings-payloads.mjs';
 import { mountBehaviorSettings } from '../components/behavior-settings.js?v=20260929-settings';
 import { mountProxySettings } from '../components/proxy-settings.js?v=20260929-settings';
-import { settingsMarkup } from '../components/settings-markup.js';
-import { SETTINGS_SECTIONS, SETTINGS_PANELS, findSettings } from '../components/settings-navigation.js';
+import { settingsMarkup } from '../components/settings-markup.js?v=20260930-settings';
+import { SETTINGS_SECTIONS, SETTINGS_PANELS, findSettings } from '../components/settings-navigation.js?v=20260930-settings';
 import { createSettingsDrafts } from '../components/settings-drafts.js';
 
 const EVENTS = { APPLICATION_RECEIVED: '收到回复', ASSESSMENT: '测评', WRITTEN_TEST: '笔试', INTERVIEW: '面试', INTERVIEW_CHANGED: '面试变更', OFFER: 'Offer', REJECTED: '拒绝', RECRUITMENT_MARKETING: '招聘营销', OTHER: '其他' };
@@ -49,7 +49,7 @@ export function mount({ root, route, navigate, api, preferences, notify = () => 
   function updateDraftStatus() {
     if (state.cleaned) return;
     const groups = { appearance: ['appearance'], delivery: ['delivery'], models: ['model', 'routing', 'health', 'proxy'], mailbox: ['account'], processing: ['filter'], policies: ['policy'], usage: [] };
-    for (const [section, names] of Object.entries(groups)) q(`[data-section-dirty="${section}"]`).hidden = !names.some((name) => drafts.dirty(name)) && !(section === 'processing' && prompts?.dirty);
+    for (const [section, names] of Object.entries(groups)) q(`[data-section-dirty="${section}"]`).hidden = !names.some((name) => drafts.dirty(name)) && !(section === 'models' && prompts?.dirty);
     q('[data-settings-draft-status]').textContent = drafts.busy || prompts?.busy ? '正在处理，请稍候…' : drafts.hasDirty || prompts?.dirty ? '有未保存修改。切换板块保留草稿；离开前请保存。' : '切换板块保留草稿；保存后生效。';
   }
   function canLeave() {
@@ -80,7 +80,7 @@ export function mount({ root, route, navigate, api, preferences, notify = () => 
     q('[data-settings-select]').value = section.id;
     q('[data-settings-group]').textContent = section.group; q('[data-settings-title]').textContent = section.title; q('[data-settings-description]').textContent = section.description;
     q('[data-settings-scroll]').scrollTop = 0;
-    if (section.id === 'processing' && state.panel === 'web') q('[data-prompt-card]').open = true;
+    if (section.id === 'models' && state.panel === 'prompts') q('[data-prompt-card]').open = true;
     if (section.id === 'usage' && !state.usageConfig && state.configs.length) openUsage(state.configs[0], false);
     if (updateUrl && typeof navigate === 'function') {
       state.internalNavigation = true;
@@ -338,10 +338,18 @@ export function mount({ root, route, navigate, api, preferences, notify = () => 
     if (button.disabled) return;
     buttonBusy(button, true, '测试中…');
     const id = button.dataset.modelTest;
+    const feedbackSelector = `[data-model-test-feedback="${id}"]`;
+    const feedback = (text, kind = 'info') => {
+      if (state.cleaned) return;
+      const element = q(feedbackSelector);
+      if (element) { element.hidden = false; msg(feedbackSelector, text, kind); }
+    };
+    feedback('正在测试模型连接…');
+    let testError = '';
     try {
       await req(`/llm/configs/${encodeURIComponent(id)}/test`, { method: 'POST' });
-      if (!state.cleaned) msg('[data-model-feedback]', '模型连接测试通过', 'success');
-    } catch (error) { if (!state.cleaned) msg('[data-model-feedback]', `模型连接测试失败：${error.message}`, 'error'); }
+      feedback('模型连接测试通过', 'success');
+    } catch (error) { testError = `模型连接测试失败：${error.message}`; feedback(testError, 'error'); }
     finally {
       if (!state.cleaned) {
         buttonBusy(button, false);
@@ -350,6 +358,7 @@ export function mount({ root, route, navigate, api, preferences, notify = () => 
           if (!state.cleaned) {
             state.configs = state.configs.map((item) => String(item.id) === id ? config : item);
             const card = q(`[data-model-card="${id}"]`); if (card) card.outerHTML = modelSummary(config); renderDiagnostics();
+            if (testError && !['failed', 'interrupted'].includes(config.health?.status)) feedback(testError, 'error');
             q(`[data-model-test="${id}"]`)?.focus({ preventScroll: true });
           }
         } catch { /* Original test feedback remains visible. */ }

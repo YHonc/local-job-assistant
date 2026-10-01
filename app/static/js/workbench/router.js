@@ -31,7 +31,7 @@ function safeParamValue(key, value) {
   if (key === 'needs_review') return ['true', 'false'].includes(trimmed) ? trimmed : null;
   if (key === 'legacy_status') return trimmed === 'true' ? trimmed : null;
   if (key === 'section') return ['appearance', 'delivery', 'models', 'mailbox', 'processing', 'policies', 'usage'].includes(trimmed) ? trimmed : null;
-  if (key === 'settings_panel') return ['list', 'routing', 'health', 'proxy', 'web', 'email'].includes(trimmed) ? trimmed : null;
+  if (key === 'settings_panel') return ['list', 'routing', 'prompts', 'health', 'proxy', 'web', 'email'].includes(trimmed) ? trimmed : null;
   if (key === 'tab') return ['inbox', 'notifications', 'events'].includes(trimmed) ? trimmed : null;
   if (key === 'status') return ['draft', 'extracted', 'confirmed'].includes(trimmed) ? trimmed : null;
   if (key === 'organize_status') return ['active', 'pending', 'organized', 'archived', 'all'].includes(trimmed) ? trimmed : null;

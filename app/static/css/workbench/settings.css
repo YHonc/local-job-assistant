@@ -11,13 +11,14 @@
 .wb-settings-sidebar { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 18px 16px 20px 0; border-right: 1px solid var(--wb-line); scrollbar-gutter: stable; }
 .wb-settings-search { display: grid; gap: 7px; color: var(--wb-muted); font-size: var(--wb-type-caption); }
 .wb-settings .wb-settings-search input { font-size: 12px; min-height: 36px; padding: 8px; }
-.wb-settings-nav { display: grid; gap: 4px; }
-.wb-settings-group { margin: 22px 10px 5px; font-size: 11px; font-weight: 650; color: var(--wb-muted); }
-.wb-settings-nav button { display: flex; justify-content: space-between; align-items: center; min-height: 39px; padding: 9px 10px; border: 0; border-radius: 8px; color: var(--wb-ink); background: transparent; text-align: left; font-size: 13px; }
+.wb-settings-nav { display: grid; gap: 10px; margin-top: 24px; }
+.wb-settings .wb-settings-group { margin: 18px 10px 4px; font-size: 11px; font-weight: 650; color: var(--wb-muted); }
+.wb-settings .wb-settings-group:first-child { margin-top: 0; }
+.wb-settings-nav button { display: flex; justify-content: space-between; align-items: center; min-height: 44px; padding: 11px 10px; border: 0; border-radius: 8px; color: var(--wb-ink); background: transparent; text-align: left; font-size: 13px; }
 .wb-settings-nav button:hover { background: var(--wb-surface-mid); }
 .wb-settings-nav button[aria-current="page"] { background: var(--wb-primary-soft); color: var(--wb-on-primary-soft); font-weight: 700; }
 .wb-settings-nav i { color: var(--wb-warn); font-style: normal; }
-.wb-settings-draft-note { color: var(--wb-muted); font-size: 11px; line-height: 1.8; padding: 8px 10px; }
+.wb-settings .wb-settings-draft-note { color: var(--wb-muted); font-size: 11px; line-height: 1.8; margin-top: 24px; padding: 8px 10px; }
 .wb-settings-results { display: grid; gap: 6px; margin-top: 10px; }
 .wb-settings-results button { text-align: left; color: var(--wb-primary); background: var(--wb-surface); border: 1px solid var(--wb-line); padding: 9px; border-radius: 7px; font-size: 12px; }
 .wb-settings-results p { color: var(--wb-muted); font-size: 12px; }
@@ -42,9 +43,13 @@
 .wb-settings .wb-entry-head { flex-wrap: wrap; }
 .wb-settings .wb-section-heading { margin-bottom: 12px; }
 .wb-settings .wb-model-list { margin: 0 0 16px; }
-.wb-settings .wb-model-row { grid-template-columns: 32px minmax(0, 1fr) auto; gap: 14px; }
+.wb-settings .wb-model-row { grid-template-columns: 32px minmax(0, 1fr); gap: 12px 14px; }
 .wb-settings .wb-model-labels { grid-column: 2; grid-row: 2; align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 10px; }
-.wb-settings .wb-model-row-actions { grid-column: 3; grid-row: 1 / 3; flex-wrap: wrap; justify-content: flex-end; max-width: 180px; }
+.wb-settings .wb-model-row-actions { grid-column: 2; grid-row: 3; flex-wrap: wrap; justify-content: flex-start; }
+.wb-settings .wb-model-test-result { grid-column: 2; grid-row: 4; min-width: 0; border-top: 1px solid var(--wb-line); padding-top: 10px; }
+.wb-settings .wb-model-test-result .wb-health-result { margin: 0 0 4px; }
+.wb-settings .wb-model-test-result small { display: block; font-size: 11px; color: var(--wb-muted); overflow-wrap: anywhere; }
+.wb-settings .wb-model-test-result .wb-feedback { margin-top: 6px; }
 .wb-settings .wb-model-row .wb-model-protocol { display: inline; }
 .wb-settings .wb-model-more > div { z-index: 9; }
 .wb-settings .wb-prompt-card { margin-top: 0; }

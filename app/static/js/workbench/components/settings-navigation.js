@@ -3,13 +3,13 @@ import { esc } from '../integrations/shared.js';
 export const SETTINGS_SECTIONS = [
   { id: 'appearance', title: '外观与显示', group: '个人偏好', description: '调整工作台的阅读体验，保留岗位的完整资料。' },
   { id: 'delivery', title: '投递行为', group: '个人偏好', description: '决定查看详情、点击投递后，如何记录投递状态。' },
-  { id: 'models', title: 'AI 模型', group: '接入与处理', description: '管理模型连接，并分别配置任务选择、自动测试与代理。' },
+  { id: 'models', title: 'AI 模型', group: '接入与处理', description: '管理模型连接、任务分配、提示词、自动测试与网络代理。' },
   { id: 'mailbox', title: '邮箱账户', group: '接入与处理', description: '管理账户连接与同步计划；授权码不会回显。' },
   { id: 'processing', title: '解析与筛选', group: '接入与处理', description: '网页岗位与招聘邮件使用各自的处理规则。' },
   { id: 'policies', title: '通知提醒', group: '接入与处理', description: '为每条策略设置提醒条件与接收渠道。' },
   { id: 'usage', title: '用量与诊断', group: '使用情况', description: '按模型和日期查看用量，以及最近的测试与同步结果。' },
 ];
-export const SETTINGS_PANELS = { models: ['list', 'routing', 'health', 'proxy'], processing: ['web', 'email'] };
+export const SETTINGS_PANELS = { models: ['list', 'routing', 'prompts', 'health', 'proxy'], processing: ['web', 'email'] };
 const TARGETS = [
   ['主题与颜色', '外观 深色 浅色 系统 种子色', 'appearance', '', '[name="theme_mode"]'],
   ['密度与动画', '显示 舒适 紧凑 减少动画', 'appearance', '', '[name="density"]'],
@@ -20,7 +20,7 @@ const TARGETS = [
   ['自动测试', '健康 检测 间隔 测试 周期', 'models', 'health', '[data-health-form] [name="enabled"]'],
   ['网络代理', '代理 proxy socks 网络 端口', 'models', 'proxy', '[name="proxy_url"]'],
   ['邮箱连接与同步计划', '邮箱 账户 qq 163 imap 授权码 密码 同步 回看', 'mailbox', '', '[data-action="new-account"]'],
-  ['网页岗位提示词', '提示词 prompt 模板 解析 提取重点 补充要求', 'processing', 'web', '[data-prompt-template]'],
+  ['提示词自定义', '网页 岗位 提示词 prompt 模板 解析 提取重点 补充要求', 'models', 'prompts', '[data-prompt-tab="quick"]'],
   ['邮件筛选规则', '正则 过滤 预筛 关键词 样例', 'processing', 'email', '[data-filter-regex]'],
   ['提醒条件与渠道', '通知 策略 push ntfy bark 桌面 截止时间', 'policies', '', '[data-action="new-policy"]'],
   ['模型用量与运行结果', '用量 token 调用 统计 诊断 失败 耗时', 'usage', '', '[data-usage-config]'],
