@@ -64,3 +64,35 @@ def test_guard_checks_deleted_private_files_in_push_history(tmp_path):
     result = check(repo, "--pre-push", input=f"refs/heads/main {sha} refs/heads/main {'0' * 40}\n")
     assert result.returncode == 1
     assert "prompt.md" in result.stderr
+
+
+def test_guard_allows_reviewed_map_but_rejects_private_payloads(tmp_path):
+    repo = setup_repo(tmp_path)
+    graph = repo / ".ua" / "knowledge-graph.json"
+    graph.parent.mkdir()
+    graph.write_text('{"nodes": []}', encoding="utf-8")
+    asset = repo / "docs/map/assets/index-example.js"
+    asset.parent.mkdir(parents=True)
+    asset.write_text("console.log('synthetic map');", encoding="utf-8")
+    git(repo, "add", ".")
+    assert check(repo, "--staged").returncode == 0
+    for rel in [".ua/tmp/private.json", "docs/map/mail.json", "artifacts/example.py", "scripts/import_paperball_campus.py"]:
+        file = repo / rel
+        file.parent.mkdir(parents=True, exist_ok=True)
+        file.write_text("synthetic", encoding="utf-8")
+    git(repo, "add", ".")
+    result = check(repo, "--staged")
+    assert result.returncode == 1
+    assert all(name in result.stderr for name in ["private.json", "mail.json", "example.py", "import_paperball_campus.py"])
+
+
+def test_guard_still_scans_allowed_map_content_for_secrets(tmp_path):
+    repo = setup_repo(tmp_path)
+    graph = repo / ".ua/knowledge-graph.json"
+    graph.parent.mkdir()
+    token = "ghp_" + "b" * 36
+    graph.write_text('{"summary": "' + token + '"}', encoding="utf-8")
+    git(repo, "add", ".")
+    result = check(repo, "--staged")
+    assert result.returncode == 1 and "GitHub token" in result.stderr
+    assert token not in result.stdout + result.stderr

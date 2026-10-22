@@ -12,6 +12,7 @@ import sys
 PUBLIC_MARKDOWN = {
     "README.md", "ARCHITECTURE.md", "extension/README.md",
     "docs/development.md", "docs/manual-qa.md", "docs/privacy.md",
+    "docs/map/README.md", "docs/map/THIRD_PARTY_NOTICES.md",
 }
 ROOT_FILES = {
     ".gitignore", ".gitattributes", "LICENSE", "pyproject.toml",
@@ -22,8 +23,19 @@ SOURCE_SUFFIXES = {".py", ".js", ".mjs", ".cjs", ".css", ".html", ".ps1", ".mako
 PUBLIC_ASSETS = {"extension/manifest.json", *(
     f"extension/icons/icon{size}.png" for size in (16, 48, 128)
 )}
+PUBLIC_MAP_FILES = {
+    ".ua/knowledge-graph.json", ".ua/meta.json", ".ua/config.json",
+    ".ua/.understandignore", ".ua/source-manifest.json", ".ua/validation-report.json",
+    "docs/.nojekyll", "docs/index.html", "docs/map/index.html",
+    "docs/map/favicon.ico", "docs/map/favicon.svg",
+    "docs/map/knowledge-graph.json", "docs/map/meta.json", "docs/map/config.json",
+    "docs/map/domain-graph.json", "docs/map/diff-overlay.json", "docs/map/build-manifest.json",
+    "docs/map/UNDERSTAND-ANYTHING-LICENSE.txt", "docs/map/DEPENDENCY-LICENSES.txt",
+}
+MAP_ASSET = re.compile(r"docs/map/assets/[A-Za-z0-9_.-]+\.(?:js|css)\Z")
 PRIVATE_PARTS = {"local", "private", "data", "prompts", "backups", "exports",
-                 "logs", "output", ".tmp", ".venv", "node_modules", "__pycache__"}
+                 "logs", "output", "outputs", "artifacts", ".tools", ".agents",
+                 ".tmp", ".venv", "node_modules", "__pycache__"}
 SECRET_RULES = {
     "private key": re.compile(rb"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
     "GitHub token": re.compile(rb"(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{40,})"),
@@ -42,7 +54,11 @@ def public_path(path: str) -> bool:
     parts = PurePosixPath(path).parts
     if any(part.lower() in PRIVATE_PARTS for part in parts):
         return False
-    if path in ROOT_FILES | PUBLIC_MARKDOWN | PUBLIC_ASSETS:
+    if "paperball" in PurePosixPath(path).name.lower():
+        return False
+    if path in ROOT_FILES | PUBLIC_MARKDOWN | PUBLIC_ASSETS | PUBLIC_MAP_FILES:
+        return True
+    if MAP_ASSET.fullmatch(path):
         return True
     return bool(parts and parts[0] in SOURCE_DIRS and PurePosixPath(path).suffix in SOURCE_SUFFIXES)
 

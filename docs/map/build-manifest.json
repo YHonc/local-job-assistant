@@ -1,0 +1,33 @@
+{
+  "upstreamRevision": "b8c807c632743ab695ec43cb654a0f1efe216bc8",
+  "upstreamVersion": "2.9.7",
+  "mode": "official-static-demo",
+  "sourcePreview": "local-dashboard-only",
+  "files": {
+    "assets/CodeViewer-D-WW1ruq.js": "ec0c4ecc2e796c5ea07d8539197baf3bb2d2d62973c9bdd17c0b4d6cc3dee555",
+    "assets/force-layout.worker-o9G88Lbd.js": "ef449d75a6c79cb242beb26c6ed6caff7e423d25c07c12927252770ff92f9878",
+    "assets/graph-layout-DJJECaXo.js": "091ecf8b4a72eac7bd80d4599d1c65998845bf8de775eb01a9646544df0b89e5",
+    "assets/index-FnUqz1wa.css": "16316df23ad7a3bb20d4fc31587d9d19ed8b4b87ae3332dd2d3f945930322fdd",
+    "assets/index-Mvqr0as4.js": "60d99b72f4d1293594c250830a42596c68ba383c84093a1fb86a9aabd5a5ae56",
+    "assets/KeyboardShortcutsHelp-CHAAuxfx.js": "b4dd0b817bdb6274e8b3b176b15c4c188de4f3abed2eceb0fa7bd0d6e3b3657b",
+    "assets/LearnPanel-Bom9k2C6.js": "8b85ff01e61cd7713edc5526b7754306026c44eff5a8484ed7830a340ad61c8e",
+    "assets/markdown-DtJ_FMNT.js": "1e9f6f4cad206a262ff75e18adc39a152afdc9f344d9605e80c7bfd9365c3438",
+    "assets/OnboardingOverlay-CTB1VT9E.js": "d24543a51e213101138aee2839b79c54030c2d063450470da5eba7a58ce9f61a",
+    "assets/PathFinderModal-DMGTnI1L.js": "c939e2c6a79087376f642425c9984685204a0ad2175eb275cac061de04d5b2f8",
+    "assets/react-vendor-BVoutfaX.js": "49174371f6cc70cd14273f029e1db3c9ef2cdd9ab7d0b196f6bb483386f35055",
+    "assets/xyflow-BLuFBhnn.js": "15a3244b56db4d0668fc84888b1a64cc7d0a6c2504514ee1ea33d554a0e8d866",
+    "assets/xyflow-BZV40eAE.css": "77eb229e70c7949e1d9e4f542afdf7b38d85eccc656a7c3ee9b8429a339872be",
+    "config.json": "aabfa32117b5409cb3ea8081cf52a883336fa9665f66eab4622910ca26ea83a7",
+    "DEPENDENCY-LICENSES.txt": "ef736e0a635b49b34e5eb90f7916e1f4e308dfddacfc26bdbbd4fd1311f481a5",
+    "diff-overlay.json": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed",
+    "domain-graph.json": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed",
+    "favicon.ico": "09d2ac08d8cca9b6e1f90221f345a8c4dd0371c64a0dc52b6f96fc589b1e3d67",
+    "favicon.svg": "6badfc6835c04a1b8128dca464ff79bd038edbb89cf68d985d2d94e7f08c9c61",
+    "index.html": "7446bef58afc53b6a72249e70f6c759ef22e6afd14f82631c1296b29612b573b",
+    "knowledge-graph.json": "bb292a6fe143aef0d6df3d3d405c038db6aa7c938b005473a467ac451f558ec4",
+    "meta.json": "97af2cc7269960fe8fc94d913c56f649ed5477cb74c73b533282cbc65a65b444",
+    "README.md": "2d54e063d18e503a5a57e74c53ca255ba72d66a963b820e003d70e0c28975c67",
+    "THIRD_PARTY_NOTICES.md": "33ecc1188f43fa62def4025b0c197899491f43fe666f4ac232fd6a4e7c515633",
+    "UNDERSTAND-ANYTHING-LICENSE.txt": "24c4b35344840f1abaf3a3a4a44f5e29ee0e73b6bf25e42ef108e0afebd402bc"
+  }
+}

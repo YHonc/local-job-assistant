@@ -2,6 +2,8 @@
 
 应用是本地单进程的 FastAPI 模块化单体，使用 SQLAlchemy 2、SQLite、Alembic、Jinja2、原生 ES modules 和 Chrome MV3 扩展。
 
+范围为 JOB 平台及 Chrome 扩展。可从 [总体开发指南](docs/development.md) 定位修改入口，或打开 [Understand-Anything 项目地图](https://yhonc.github.io/local-job-assistant/map/) 浏览分层与中文导览。地图是静态源码快照，导入边、调用边和测试关联分别解释；不代表真实运行追踪。
+
 ## 模块职责
 
 | 目录 | 职责 |

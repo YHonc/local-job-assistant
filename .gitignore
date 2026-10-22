@@ -10,6 +10,15 @@ output/
 ui-preview/
 design-preview*/
 .tmp/
+/artifacts/paperball-2027-20260930/
+/artifacts/
+/outputs/
+/.tools/
+/.agents/
+/.ua/tmp/
+/.ua/intermediate/
+/.ua/.trash-*/
+/.ua/fingerprints.json
 .playwright-cli/
 playwright-report/
 test-results/
@@ -65,3 +74,5 @@ Thumbs.db
 !/docs/development.md
 !/docs/manual-qa.md
 !/docs/privacy.md
+!/docs/map/README.md
+!/docs/map/THIRD_PARTY_NOTICES.md
