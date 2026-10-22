@@ -15841,7 +15841,7 @@
       "filePath": "scripts/build_project_map.py",
       "lineRange": [
         75,
-        133
+        137
       ],
       "summary": "函数 main，位于本文件的实现中；详细分支和参数约束见源码。",
       "tags": [
@@ -35060,7 +35060,7 @@
       "Chrome Manifest V3"
     ],
     "description": "本机单用户求职工作台，包含 Chrome 扩展采集、岗位与投递管理、可选模型解析、邮件进度建议及提醒。地图为静态源码分析，包含测试设计但不代表运行验收。",
-    "analyzedAt": "2026-10-22T04:27:30.453615+00:00",
-    "gitCommitHash": "4168a734a6345de5a8bafd570c33d68109b73ce4"
+    "analyzedAt": "2026-10-22T04:35:02.883129+00:00",
+    "gitCommitHash": "919e766c51769802f44341ca910a69992585c5cb"
   }
 }

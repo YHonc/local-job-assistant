@@ -1,6 +1,6 @@
 {
   "format": "sha256-utf8-normalized-newlines",
-  "baseCommit": "4168a734a6345de5a8bafd570c33d68109b73ce4",
+  "baseCommit": "919e766c51769802f44341ca910a69992585c5cb",
   "workingTreeIncluded": true,
   "files": {
     ".gitattributes": "d046b9b10a8d976fa9ad1c0732d1ed0fd19184734037542aac71a5556f18d26b",
@@ -144,7 +144,7 @@
     "migrations/versions/0017_status_and_model_health.py": "a6e01eee3af00e6b749f819f8353570afdc838dadbc191e47ef62aceef810832",
     "migrations/versions/0018_llm_local_proxy.py": "e123fa4e2a30ece3e1c7d9082795b4b15467707fa518eb1c7bb75c0dcd9c46a8",
     "pyproject.toml": "50d4e2f819bb62720465a6b696ec9a547a3a6ca19e4ccf169029f5821df3f026",
-    "scripts/build_project_map.py": "c5928e13e1d6ab40b135892b8cd4077e27afff8707fdc40902a9645fc853c108",
+    "scripts/build_project_map.py": "5ce9e18e036a4dbae2cd4b8be698397e54649a7d23b3bb32211d9cb511f7e6a2",
     "scripts/check_publication.py": "6be03ad44eaf083f81744991fc08fe71f5f2bd8f9fbd1126315901d39ae55770",
     "scripts/dev/check-email-api.js": "4aa66a6aa24977bdc5eb365beab306818d6093de98cc1c3501c079eb77faad13",
     "scripts/dev/check-email-inbox.js": "0384c7f9f9ff83292e928c463755d207180e702f4f1b2028a1ae0dbe6c9d2a77",
