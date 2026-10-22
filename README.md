@@ -2,7 +2,7 @@
 
 **把招聘网页、岗位收藏、投递进度和招聘邮件，整理到一个本机运行的求职工作台。**
 
-[开始使用](#快速开始) · [浏览项目地图](https://yhonc.github.io/local-job-assistant/map/) · [开发指南](docs/development.md) · [Chrome 扩展](extension/README.md) · [MIT License](LICENSE)
+[开始使用](#快速开始) · [开发指南](docs/development.md) · [Chrome 扩展](extension/README.md) · [MIT License](LICENSE)
 
 ## 项目能做什么
 
@@ -17,18 +17,6 @@
 主界面包含 **岗位库、待整理、投递跟进、邮件与提醒、设置** 五个视图。基础岗位管理不需要模型或邮箱，需要解析或同步时再连接外部服务。
 
 本仓库的产品范围是 **JOB 平台与配套 Chrome 扩展**。个人采集 skill、批次处理脚本、招聘数据集和个人求职资料不包含在开源发布中。
-
-## 项目地图
-
-**[点击打开 Understand-Anything 交互式地图 →](https://yhonc.github.io/local-job-assistant/map/)**
-
-地图提供模块分层、文件与符号搜索、依赖关系和中文阅读导览。初次了解项目可从应用入口开始，依次查看工作台、网页采集、邮件处理、模型服务与存储。
-
-- [图谱原始数据](.ua/knowledge-graph.json)：可版本控制，也可在本地 Understand-Anything dashboard 中打开。
-- [地图维护与生成说明](docs/map/README.md)：分析范围、固定工具版本、重建方法和静态展示限制。
-- [第三方声明](docs/map/THIRD_PARTY_NOTICES.md)：地图查看器及浏览器端依赖的许可与版权信息。
-
-地图是**源码分析快照**。`imports` 表示导入依赖，不能当作实际函数调用或运行数据流；测试关联不表示测试已执行。公开页面可看地图与导览，源码预览需使用本地 dashboard，源码本身可在本仓库查看。
 
 ## 快速开始
 
@@ -103,10 +91,10 @@ flowchart LR
 | `extension/` | Chrome 采集扩展与解析队列 |
 | `migrations/` | 数据库迁移 |
 | `tests/` | Python 和 Node.js 测试 |
-| `scripts/` | 启动、预览、地图构建与发布检查工具 |
-| `docs/`、`.ua/` | 开发文档、公开地图与知识图谱 |
+| `scripts/` | 启动、预览与发布检查工具 |
+| `docs/` | 开发、架构、验收与隐私文档 |
 
-开发依赖安装：`python -m pip install -e ".[dev]"`。前端不需要应用构建；前端测试需要 Node.js。交互地图的独立构建需要 Node.js 22+ 和 pnpm 10+，不影响 JOB 平台正常运行。
+开发依赖安装：`python -m pip install -e ".[dev]"`。前端不需要应用构建；前端测试需要 Node.js。
 
 开发顺序与命令见 [总体开发指南](docs/development.md)，简版设计见 [架构说明](ARCHITECTURE.md)。修改数据模型、共享 schema、状态或扩展协议时，请同步维护对应测试。
 
@@ -124,4 +112,4 @@ flowchart LR
 
 欢迎通过 Issue 描述可复现问题，或提交范围明确的改进。提交前运行受影响测试并检查暂存内容；不要提交真实岗位资料、邮箱内容或凭据。
 
-JOB 平台采用 [MIT License](LICENSE)，保留原始版权与许可声明。地图查看器来自 [Understand-Anything](https://github.com/Egonex-AI/Understand-Anything)，其代码和依赖保留各自许可证；分发说明见 [第三方声明](docs/map/THIRD_PARTY_NOTICES.md)。
+JOB 平台采用 [MIT License](LICENSE)，保留原始版权与许可声明。项目使用的第三方依赖仍适用各自许可证。

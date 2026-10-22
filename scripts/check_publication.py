@@ -23,6 +23,8 @@ SOURCE_SUFFIXES = {".py", ".js", ".mjs", ".cjs", ".css", ".html", ".ps1", ".mako
 PUBLIC_ASSETS = {"extension/manifest.json", *(
     f"extension/icons/icon{size}.png" for size in (16, 48, 128)
 )}
+# Retain the reviewed former map paths for full-history checks: removing the
+# current files does not remove their objects from already-published commits.
 PUBLIC_MAP_FILES = {
     ".ua/knowledge-graph.json", ".ua/meta.json", ".ua/config.json",
     ".ua/.understandignore", ".ua/source-manifest.json", ".ua/validation-report.json",
